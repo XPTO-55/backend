@@ -1,0 +1,6 @@
+## configurações da aplicação quando está em ambiente de staging
+
+server.port: 7002
+
+# spring.jpa.properties.hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
+    
