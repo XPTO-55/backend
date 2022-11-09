@@ -6,18 +6,17 @@ import java.util.*;
 
 public class Utils {
 
-
-    public static Integer calculaIdadePorData(LocalDate data){
+    public static Integer calculaIdadePorData(LocalDate data) {
         return data.getYear();
     }
 
-//     desafio ordenação
+    // desafio ordenação
     public static void ordenarPorIdade(ListaObj<Paciente> v) {
         Paciente aux;
         for (int i = 0; i < v.getTamanho(); i++) {
             for (int j = 0; j < v.getTamanho() - 1; j++) {
-                if (Utils.calculaIdadePorData(v.getElemento(i).getDataDeNascimento())
-                        < Utils.calculaIdadePorData(v.getElemento(j).getDataDeNascimento())) {
+                if (Utils.calculaIdadePorData(v.getElemento(i).getDataDeNascimento()) < Utils
+                        .calculaIdadePorData(v.getElemento(j).getDataDeNascimento())) {
                     aux = v.getElemento(i);
                     v.setElemento(i, v.getElemento(j));
                     v.setElemento(j, aux);
@@ -25,23 +24,22 @@ public class Utils {
             }
         }
     }
-//    Gravando arquvivo CSV
+
+    // Gravando arquvivo CSV
     public static void gravaArquivoCsv(ListaObj<Paciente> lista,
-                                       String nomeArq) {
-        FileWriter arq = null;   // objeto que representa o arquivo de gravação
-        Formatter saida = null;  // objeto usado para gravar no arquivo
+            String nomeArq) {
+        FileWriter arq = null; // objeto que representa o arquivo de gravação
+        Formatter saida = null; // objeto usado para gravar no arquivo
         Boolean deuRuim = false;
-        nomeArq += ".csv";      // Acrescenta a extensão .csv ao nome do arquivo
+        nomeArq += ".csv"; // Acrescenta a extensão .csv ao nome do arquivo
 
         ordenarPorIdade(lista);
 
-
         // Bloco para abrir o arquivo
         try {
-            arq = new FileWriter(nomeArq);  // cria ou abre o arquivo
+            arq = new FileWriter(nomeArq); // cria ou abre o arquivo
             saida = new Formatter(arq);
-        }
-        catch (IOException erro) {
+        } catch (IOException erro) {
             System.out.println("Erro ao abrir o arquivo");
             System.exit(1);
         }
@@ -51,21 +49,18 @@ public class Utils {
             saida.format("NOME;RG;CPF;DATA NASCIMENTO;TELEFONE FIXO;TELEFONE MOVEL;ENDERECO \n");
             for (int i = 0; i < lista.getTamanho(); i++) {
                 Paciente p = lista.getElemento(i);
-                saida.format("%s;%s;%s;%s;%s;%s;%s\n",p.getNome(), p.getRg(),p.getCpf(),p.getDataDeNascimento(),
-                        p.getTelefoneFixo(),p.getTelefoneCelular(),p.getEndereco());
+                saida.format("%s;%s;%s;%s;%s;%s;%s\n", p.getNome(), p.getRg(), p.getCpf(), p.getDataDeNascimento(),
+                        p.getTelefoneFixo(), p.getTelefoneCelular(), p.getEndereco());
             }
-        }
-        catch (FormatterClosedException erro) {
+        } catch (FormatterClosedException erro) {
             System.out.println(erro);
             System.out.println("Erro ao gravar o arquivo");
             deuRuim = true;
-        }
-        finally {
+        } finally {
             saida.close();
             try {
                 arq.close();
-            }
-            catch (IOException erro) {
+            } catch (IOException erro) {
                 System.out.println("Erro ao fechar o arquivo");
                 deuRuim = true;
             }
@@ -75,9 +70,9 @@ public class Utils {
         }
     }
 
-// Ler / exibe arquivo CSV
+    // Ler / exibe arquivo CSV
     public static void leExibeArquivoCsv(String nomeArq) {
-        FileReader arq = null;  // objeto que representa o arquivo de leitura
+        FileReader arq = null; // objeto que representa o arquivo de leitura
         Scanner entrada = null; // objeto usado para ler do arquivo
         Boolean deuRuim = false;
         nomeArq += ".csv";
@@ -86,15 +81,15 @@ public class Utils {
         try {
             arq = new FileReader(nomeArq);
             entrada = new Scanner(arq).useDelimiter(";|\\n");
-        }
-        catch (FileNotFoundException erro) {
+        } catch (FileNotFoundException erro) {
             System.out.println("Arquivo não encontrado");
             System.exit(1);
         }
 
         // Bloco para ler o arquivo
         try {
-            // System.out.printf("%-20s %11s %15s %20s,%16s,%30s \n", "NOME", "RG", "CPF", "TELEFONE FIXO","TELEFONE MOVEL","ENDERECO");
+            // System.out.printf("%-20s %11s %15s %20s,%16s,%30s \n", "NOME", "RG", "CPF",
+            // "TELEFONE FIXO","TELEFONE MOVEL","ENDERECO");
             while (entrada.hasNext()) {
                 String nome = entrada.next();
                 String rg = entrada.next();
@@ -105,25 +100,21 @@ public class Utils {
                 String endereco = entrada.next();
 
                 System.out.printf("%-20s | %11s | %15s | %17s | %15s | %16s | %-20s \n", nome,
-                        rg,cpf,dataDeNascimento,telefoneFixo,telefoneMovel,endereco);
+                        rg, cpf, dataDeNascimento, telefoneFixo, telefoneMovel, endereco);
             }
-        }
-        catch (NoSuchElementException erro) {
+        } catch (NoSuchElementException erro) {
             System.out.println(erro);
             System.out.println("Arquivo com problemas");
             deuRuim = true;
-        }
-        catch (IllegalStateException erro) {
+        } catch (IllegalStateException erro) {
             System.out.println("Erro na leitura do arquivo");
             deuRuim = true;
             System.out.println(erro);
-        }
-        finally {
+        } finally {
             entrada.close();
             try {
                 arq.close();
-            }
-            catch (IOException erro) {
+            } catch (IOException erro) {
                 System.out.println("Erro ao fechar o arquivo");
                 deuRuim = true;
             }
@@ -134,7 +125,7 @@ public class Utils {
 
     }
 
-// Gravar arquivo TXT
+    // Gravar arquivo TXT
 
     public static void gravaRegistro(String registro, String nomeArq) {
         BufferedWriter saida = null;
@@ -142,8 +133,7 @@ public class Utils {
         // try-catch para abrir o arquivo
         try {
             saida = new BufferedWriter(new FileWriter(nomeArq, true));
-        }
-        catch (IOException erro) {
+        } catch (IOException erro) {
             System.out.println("Erro ao abrir o arquivo");
             erro.printStackTrace();
         }
@@ -151,8 +141,7 @@ public class Utils {
         try {
             saida.append(registro + "\n");
             saida.close();
-        }
-        catch (IOException erro) {
+        } catch (IOException erro) {
             System.out.println("Erro ao gravar o arquivo");
             erro.printStackTrace();
         }
@@ -191,12 +180,11 @@ public class Utils {
         gravaRegistro(trailer, nomeArq);
     }
 
-
     public static void leArquivoTxt(String nomeArq) {
         BufferedReader entrada = null;
         String registro, tipoRegistro;
 
-        String nome,rg,cpf, telefoneFixo, telefoneCelular, endereco;
+        String nome, rg, cpf, telefoneFixo, telefoneCelular, endereco;
         LocalDate dataDeNascimento;
 
         int contaRegDadoLido = 0;
@@ -207,8 +195,7 @@ public class Utils {
         // try-catch para abrir o arquivo
         try {
             entrada = new BufferedReader(new FileReader(nomeArq));
-        }
-        catch (IOException erro) {
+        } catch (IOException erro) {
             System.out.println("Erro ao abrir o arquivo");
             erro.printStackTrace();
         }
@@ -222,42 +209,37 @@ public class Utils {
                 tipoRegistro = registro.substring(0, 2);
                 if (tipoRegistro.equals("00")) {
                     System.out.println("Registro de Header");
-                    System.out.println("Tipo do arquivo: " + registro.substring(2, 6));
-                    System.out.println("Ano e semestre: " + registro.substring(6, 11));
-                    System.out.println("Data e hora da gravação: " + registro.substring(11, 30));
-                    System.out.println("Versão do documento: " + registro.substring(30, 32));
-                }
-                else if (tipoRegistro.equals("01")) {
+                    System.out.println("Tipo do arquivo: " + registro.substring(2, 14));
+                    System.out.println("Data e hora da gravação: " + registro.substring(14, 33));
+                    System.out.println("Versão do documento: " + registro.substring(33, 35));
+                } else if (tipoRegistro.equals("01")) {
                     System.out.println("Registro de Trailer");
                     qtdRegDadoGravado = Integer.valueOf(registro.substring(2, 12));
                     if (contaRegDadoLido == qtdRegDadoGravado) {
                         System.out.println("Quantidade de registros lidos é compatível com " +
                                 " quantidade de registros gravados");
-                    }
-                    else {
+                    } else {
                         System.out.println("Quantidade de registros lidos não é compatível com " +
                                 " quantidade de registros gravados");
                     }
-                }
-                else if (tipoRegistro.equals("02")) {
+                } else if (tipoRegistro.equals("02")) {
                     System.out.println("Registro de Corpo");
                     nome = registro.substring(15, 65).trim();
                     rg = registro.substring(7, 15).trim();
                     cpf = registro.substring(7, 15).trim();
-                    dataDeNascimento = LocalDate.parse(registro.substring(7,15), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                    dataDeNascimento = LocalDate.parse(registro.substring(7, 15),
+                            DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                     telefoneCelular = registro.substring(7, 15).trim();
                     telefoneFixo = registro.substring(7, 15).trim();
                     endereco = registro.substring(7, 15).trim();
 
-
-
                     contaRegDadoLido++;
 
-                    Paciente paciente = new Paciente( nome, rg, cpf, dataDeNascimento, telefoneFixo, telefoneCelular, endereco);
+                    Paciente paciente = new Paciente(nome, rg, cpf, dataDeNascimento, telefoneFixo, telefoneCelular,
+                            endereco);
                     listaLida.add(paciente);
 
-                }
-                else {
+                } else {
                     System.out.println("Tipo de registro inválido!");
                 }
 
@@ -265,8 +247,7 @@ public class Utils {
                 registro = entrada.readLine();
             }
             entrada.close();
-        }
-        catch (IOException erro) {
+        } catch (IOException erro) {
             System.out.println("Erro ao ler o arquivo");
             erro.printStackTrace();
         }
