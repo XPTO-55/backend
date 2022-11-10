@@ -25,9 +25,9 @@ public class Utils {
         }
     }
 
-    // Gravando arquvivo CSV
+    // =============== Gravando arquvivo CSV =====================
     public static void gravaArquivoCsv(ListaObj<Paciente> lista,
-            String nomeArq) {
+                                       String nomeArq) {
         FileWriter arq = null; // objeto que representa o arquivo de gravação
         Formatter saida = null; // objeto usado para gravar no arquivo
         Boolean deuRuim = false;
@@ -46,11 +46,11 @@ public class Utils {
 
         // Bloco para gravar o arquivo
         try {
-            saida.format("NOME;RG;CPF;DATA NASCIMENTO;TELEFONE FIXO;TELEFONE MOVEL;ENDERECO \n");
+            saida.format("NOME;EMAIL;CPF;DATA NASCIMENTO;TELEFONE FIXO;TELEFONE MOVEL;ENDERECO \n");
             for (int i = 0; i < lista.getTamanho(); i++) {
                 Paciente p = lista.getElemento(i);
-                saida.format("%s;%s;%s;%s;%s;%s;%s\n", p.getNome(), p.getRg(), p.getCpf(), p.getDataDeNascimento(),
-                        p.getTelefoneFixo(), p.getTelefoneCelular(), p.getEndereco());
+                saida.format("%s;%s;%s;%s;%s;%s;%s\n", p.getNome(), p.getEmail(), p.getCpf(), p.getDataDeNascimento(),
+                        p.getTelefoneFixo(), p.getTelefoneCelular());
             }
         } catch (FormatterClosedException erro) {
             System.out.println(erro);
@@ -92,15 +92,15 @@ public class Utils {
             // "TELEFONE FIXO","TELEFONE MOVEL","ENDERECO");
             while (entrada.hasNext()) {
                 String nome = entrada.next();
-                String rg = entrada.next();
+                String email = entrada.next();
                 String cpf = entrada.next();
                 String dataDeNascimento = entrada.next();
                 String telefoneFixo = entrada.next();
                 String telefoneMovel = entrada.next();
-                String endereco = entrada.next();
 
-                System.out.printf("%-20s | %11s | %15s | %17s | %15s | %16s | %-20s \n", nome,
-                        rg, cpf, dataDeNascimento, telefoneFixo, telefoneMovel, endereco);
+
+                System.out.printf("%-40s | %42s | %11s | %10s | %14s | %15s \n", nome,
+                        email, cpf, dataDeNascimento, telefoneFixo, telefoneMovel);
             }
         } catch (NoSuchElementException erro) {
             System.out.println(erro);
@@ -125,7 +125,7 @@ public class Utils {
 
     }
 
-    // Gravar arquivo TXT
+    // ==================== Gravar arquivo TXT =========================
 
     public static void gravaRegistro(String registro, String nomeArq) {
         BufferedWriter saida = null;
@@ -147,7 +147,7 @@ public class Utils {
         }
     }
 
-    public static void gravaArquivoTxt(List<Paciente> lista, String nomeArq) {
+    public static void gravaArquivoTxt(List<Paciente> lista String nomeArq) {
         int contaRegDados = 0;
 
         // Monta o registro de header
@@ -158,17 +158,41 @@ public class Utils {
         // Grava o registro de header
         gravaRegistro(header, nomeArq);
 
-        // Monta e grava os registros de corpo
+        // Monta e grava os registros de corpo 02
         String corpo;
         for (Paciente paciente : lista) {
             corpo = "02";
             corpo += String.format("%-40.40s", paciente.getNome());
-            corpo += String.format("%-10.10s", paciente.getRg());
-            corpo += String.format("%-50.50s", paciente.getCpf());
-            corpo += String.format("%-40.40s", paciente.getDataDeNascimento());
-            corpo += String.format("%05.2f", paciente.getTelefoneFixo());
-            corpo += String.format("%03d", paciente.getTelefoneCelular());
-            corpo += String.format("%03d", paciente.getEndereco());
+            corpo += String.format("%-42.42s", paciente.getEmail());
+            corpo += String.format("%-11.11s", paciente.getCpf());
+            corpo += String.format("%-10.10s", paciente.getDataDeNascimento());
+            corpo += String.format("%-14.14s", paciente.getTelefoneFixo());
+            corpo += String.format("%-15.15s", paciente.getTelefoneCelular());
+            gravaRegistro(corpo, nomeArq);
+            contaRegDados++;
+
+            corpo += String.format("%-15.15s", paciente.getEndereco().getRua());
+            corpo += String.format("%-15.15s", paciente.getEndereco().getCidade());
+            corpo += String.format("%-15.15s", paciente.getEndereco().getRua());
+            corpo += String.format("%-15.15s", paciente.getEndereco().getRua());
+
+
+            gravaRegistro(corpo, nomeArq);
+            contaRegDados++;
+        }
+
+        // Monta e grava os registros de corpo 03
+        String corpo2;
+        for (Endereco endereco : listaEnd) {
+            corpo = "03";
+            corpo += String.format("%-60.60s", endereco.getRua());
+            corpo += String.format("%-30.30s", endereco.getBairro());
+            corpo += String.format("%-9.9s", endereco.getCep());
+            corpo += String.format("%-5.5s", endereco.getNumero());
+            corpo += String.format("%-21.21s", endereco.getComplemento());
+            corpo += String.format("%-20.20s", endereco.getCidade());
+            corpo += String.format("%-2.2s", endereco.getUf());
+
 
             gravaRegistro(corpo, nomeArq);
             contaRegDados++;
@@ -184,7 +208,7 @@ public class Utils {
         BufferedReader entrada = null;
         String registro, tipoRegistro;
 
-        String nome, rg, cpf, telefoneFixo, telefoneCelular, endereco;
+        String nome, email, cpf, telefoneFixo, telefoneCelular, rua,;
         LocalDate dataDeNascimento;
 
         int contaRegDadoLido = 0;
@@ -225,18 +249,18 @@ public class Utils {
                 } else if (tipoRegistro.equals("02")) {
                     System.out.println("Registro de Corpo");
                     nome = registro.substring(15, 65).trim();
-                    rg = registro.substring(7, 15).trim();
+                    email = registro.substring(7, 15).trim();
                     cpf = registro.substring(7, 15).trim();
                     dataDeNascimento = LocalDate.parse(registro.substring(7, 15),
                             DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                     telefoneCelular = registro.substring(7, 15).trim();
                     telefoneFixo = registro.substring(7, 15).trim();
-                    endereco = registro.substring(7, 15).trim();
+                    e = registro.substring(7, 15).trim();
+
 
                     contaRegDadoLido++;
 
-                    Paciente paciente = new Paciente(nome, rg, cpf, dataDeNascimento, telefoneFixo, telefoneCelular,
-                            endereco);
+                    Paciente paciente = new Paciente(nome, email, cpf, dataDeNascimento, telefoneFixo, telefoneCelular, end);
                     listaLida.add(paciente);
 
                 } else {

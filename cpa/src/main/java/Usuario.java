@@ -1,31 +1,29 @@
 import java.time.LocalDate;
 import java.util.Date;
 
-public abstract class  Usuario {
+public abstract class Usuario {
 
     private String nome;
-    private String rg;
+    private String email;
     private String cpf;
     private LocalDate dataDeNascimento;
     private String telefoneFixo;
     private String telefoneCelular;
-    private String endereco;
 
-    public Usuario(String nome,
-                   String rg,
-                   String cpf,
-                   LocalDate dataDeNascimento,
-                   String telefoneFixo,
-                   String telefoneCelular,
-                   String endereco) {
+    private Endereco endereco;
+
+
+    public Usuario(String nome, String email, String cpf, LocalDate dataDeNascimento, String telefoneFixo,
+                   String telefoneCelular, Endereco endereco) {
         this.nome = nome;
-        this.rg = rg;
+        this.email = email;
         this.cpf = cpf;
         this.dataDeNascimento = dataDeNascimento;
         this.telefoneFixo = telefoneFixo;
         this.telefoneCelular = telefoneCelular;
         this.endereco = endereco;
     }
+
 
     public String getNome() {
         return nome;
@@ -35,12 +33,12 @@ public abstract class  Usuario {
         this.nome = nome;
     }
 
-    public String getRg() {
-        return rg;
+    public String getEmail() {
+        return email;
     }
 
-    public void setRg(String rg) {
-        this.rg = rg;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getCpf() {
@@ -75,24 +73,24 @@ public abstract class  Usuario {
         this.telefoneCelular = telefoneCelular;
     }
 
-    public String getEndereco() {
+    public Endereco getEndereco() {
         return endereco;
     }
 
-    public void setEndereco(String endereco) {
+    public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
     }
 
-    @java.lang.Override
-    public java.lang.String toString() {
+    @Override
+    public String toString() {
         return "Usuario{" +
                 "nome='" + nome + '\'' +
-                ", rg='" + rg + '\'' +
+                ", email='" + email + '\'' +
                 ", cpf='" + cpf + '\'' +
                 ", dataDeNascimento=" + dataDeNascimento +
                 ", telefoneFixo='" + telefoneFixo + '\'' +
                 ", telefoneCelular='" + telefoneCelular + '\'' +
-                ", endereco='" + endereco + '\'' +
+                ", endereco=" + endereco.toString() +
                 '}';
     }
 }

@@ -35,8 +35,8 @@ public class App {
                     System.out.println("Digite seu nome:");
                     String nome = leitor.nextLine();
 
-                    System.out.println("Digite seu RG:");
-                    String rg = leitor.nextLine();
+                    System.out.println("Digite seu email:");
+                    String email = leitor.nextLine();
 
                     System.out.println("Digite seu CPF:");
                     String cpf = leitor.nextLine();
@@ -53,19 +53,19 @@ public class App {
                     System.out.println("Digite seu endereco:");
                     String endereco = leitor.nextLine();
 
-                    usuarioListaObj.adiciona(new Paciente(nome, rg, cpf, dataDeNascimento, telefoneFixo, telefoneMovel,
-                            endereco, null, null));
+                    usuarioListaObj.adiciona(new Paciente(nome, email, cpf, dataDeNascimento, telefoneFixo, telefoneMovel,
+                            null, null, null));
 
                     System.out.println("Usuario adicionado!");
                     break;
 
                 case 2:
                     System.out.println("");
-                    System.out.printf("%-20s | %11s | %15s | %17s | %15s | %16s | %-20s \n", "NOME", "RG", "CPF",
+                    System.out.printf("%-20s | %11s | %15s | %17s | %15s | %16s | %-20s \n", "NOME", "EMAIL", "CPF",
                             " DATA NASCIMENTO ", "TELEFONE FIXO", "TELEFONE MOVEL", "ENDERECO");
                     for (int i = 0; i < usuarioListaObj.getTamanho(); i++) {
                         Usuario p = usuarioListaObj.getElemento(i);
-                        System.out.printf("%-20s | %11s | %15s | %17s | %15s | %16s | %-20s \n", p.getNome(), p.getRg(),
+                        System.out.printf("%%-40s | %42s | %11s | %10s | %14s | %15s  \n", p.getNome(), p.getEmail(),
                                 p.getCpf(), p.getDataDeNascimento(), p.getTelefoneFixo(), p.getTelefoneCelular(),
                                 p.getEndereco());
                     }
@@ -89,13 +89,13 @@ public class App {
                     Utils.leArquivoTxt("Pacientes.txt");
                     break;
                 case 7:
-                    System.out.println("Digite o nome de um comprador:");
-                    String comprador = leitor.nextLine();
+                    System.out.println("Digite o nome de um paciente:");
+                    String paciente2 = leitor.nextLine();
 
                     for (int i = 0; i < usuarioListaObj.getTamanho(); i++) {
                         Paciente paciente = usuarioListaObj.getElemento(i);
-                        if (comprador.equals(paciente.getNome())) {
-                            System.out.println("Comprador " + comprador + " encontrado");
+                        if (paciente2.equals(paciente.getNome())) {
+                            System.out.println("Paciente: " + paciente2 + " encontrado");
                         }
                     }
                     break;
