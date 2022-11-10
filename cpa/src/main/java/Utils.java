@@ -181,23 +181,6 @@ public class Utils {
             contaRegDados++;
         }
 
-        // Monta e grava os registros de corpo 03
-        String corpo2;
-        for (Endereco endereco : listaEnd) {
-            corpo = "03";
-            corpo += String.format("%-60.60s", endereco.getRua());
-            corpo += String.format("%-30.30s", endereco.getBairro());
-            corpo += String.format("%-9.9s", endereco.getCep());
-            corpo += String.format("%-5.5s", endereco.getNumero());
-            corpo += String.format("%-21.21s", endereco.getComplemento());
-            corpo += String.format("%-20.20s", endereco.getCidade());
-            corpo += String.format("%-2.2s", endereco.getUf());
-
-
-            gravaRegistro(corpo, nomeArq);
-            contaRegDados++;
-        }
-
         // Monta e grava o registro de trailer
         String trailer = "01";
         trailer += String.format("%010d", contaRegDados);
