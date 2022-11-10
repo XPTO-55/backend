@@ -147,7 +147,7 @@ public class Utils {
         }
     }
 
-    public static void gravaArquivoTxt(List<Paciente> lista String nomeArq) {
+    public static void gravaArquivoTxt(List<Paciente> lista, String nomeArq) {
         int contaRegDados = 0;
 
         // Monta o registro de header
@@ -243,7 +243,7 @@ public class Utils {
 
                     contaRegDadoLido++;
 
-                    Paciente paciente = new Paciente(nome, email, cpf, dataDeNascimento, telefoneFixo, telefoneCelular, end);
+                    Paciente paciente = new Paciente(nome, email, cpf, dataDeNascimento, telefoneFixo, telefoneCelular, endereco);
                     listaLida.add(paciente);
 
                 } else {
