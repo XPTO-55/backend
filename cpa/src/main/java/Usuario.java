@@ -24,6 +24,11 @@ public abstract class Usuario {
         this.endereco = endereco;
     }
 
+    public Usuario(String nome, String email, String cpf, LocalDate dataDeNascimento, String telefoneFixo,
+                   String telefoneCelular, String rua, String bairro, String cep, String numero, String complemento,
+                   String cidade, String uf) {
+    }
+
 
     public String getNome() {
         return nome;

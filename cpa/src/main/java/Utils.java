@@ -6,32 +6,33 @@ import java.util.*;
 
 public class Utils {
 
+
     public static Integer calculaIdadePorData(LocalDate data) {
         return data.getYear();
     }
 
-    // desafio ordenação
-    public static void ordenarPorIdade(ListaObj<Paciente> v) {
+    // ============= Ordenação ==============
+    public static void ordenarPorIdade(List<Paciente> v) {
         Paciente aux;
-        for (int i = 0; i < v.getTamanho(); i++) {
-            for (int j = 0; j < v.getTamanho() - 1; j++) {
-                if (Utils.calculaIdadePorData(v.getElemento(i).getDataDeNascimento()) < Utils
-                        .calculaIdadePorData(v.getElemento(j).getDataDeNascimento())) {
-                    aux = v.getElemento(i);
-                    v.setElemento(i, v.getElemento(j));
-                    v.setElemento(j, aux);
+        for (int i = 0; i < v.size(); i++) {
+            for (int j = 0; j < v.size() - 1; j++) {
+                if (Utils.calculaIdadePorData(v.get(i).getDataDeNascimento()) < Utils
+                        .calculaIdadePorData(v.get(j).getDataDeNascimento())) {
+                    aux = v.get(i);
+                    v.set(i, v.get(j));
+                    v.set(j, aux);
                 }
             }
         }
     }
 
     // =============== Gravando arquvivo CSV =====================
-    public static void gravaArquivoCsv(ListaObj<Paciente> lista,
+    public static void gravaArquivoCsv(List<Paciente> lista,
                                        String nomeArq) {
         FileWriter arq = null; // objeto que representa o arquivo de gravação
         Formatter saida = null; // objeto usado para gravar no arquivo
         Boolean deuRuim = false;
-        nomeArq += ".csv"; // Acrescenta a extensão .csv ao nome do arquivo
+        nomeArq += ".csv"; // Acrescenta a extensão.csv ao nome do arquivo
 
         ordenarPorIdade(lista);
 
@@ -46,10 +47,10 @@ public class Utils {
 
         // Bloco para gravar o arquivo
         try {
-            saida.format("NOME;EMAIL;CPF;DATA NASCIMENTO;TELEFONE FIXO;TELEFONE MOVEL;ENDERECO \n");
-            for (int i = 0; i < lista.getTamanho(); i++) {
-                Paciente p = lista.getElemento(i);
-                saida.format("%s;%s;%s;%s;%s;%s;%s\n", p.getNome(), p.getEmail(), p.getCpf(), p.getDataDeNascimento(),
+            saida.format("NOME;EMAIL;CPF;DATA NASCIMENTO;TELEFONE FIXO;TELEFONE MOVEL\n");
+            for (int i = 0; i < lista.size(); i++) {
+                Paciente p = lista.get(i);
+                saida.format("%s;%s;%s;%s;%s;%s\n", p.getNome(), p.getEmail(), p.getCpf(), p.getDataDeNascimento(),
                         p.getTelefoneFixo(), p.getTelefoneCelular());
             }
         } catch (FormatterClosedException erro) {
@@ -151,7 +152,7 @@ public class Utils {
         int contaRegDados = 0;
 
         // Monta o registro de header
-        String header = "00PACIENTE";
+        String header = "00PACIENTE    ";
         header += LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
         header += "01";
 
@@ -160,22 +161,28 @@ public class Utils {
 
         // Monta e grava os registros de corpo 02
         String corpo;
-        for (Paciente paciente : lista) {
+        for (int i = 0; i < lista.size(); i++) {
+            Paciente paciente = lista.get(i);
             corpo = "02";
+            corpo += String.format("%-6.6s", null);
             corpo += String.format("%-40.40s", paciente.getNome());
             corpo += String.format("%-42.42s", paciente.getEmail());
             corpo += String.format("%-11.11s", paciente.getCpf());
             corpo += String.format("%-10.10s", paciente.getDataDeNascimento());
             corpo += String.format("%-14.14s", paciente.getTelefoneFixo());
             corpo += String.format("%-15.15s", paciente.getTelefoneCelular());
-            gravaRegistro(corpo, nomeArq);
+            gravaRegistro(corpo , nomeArq);
             contaRegDados++;
 
-            corpo += String.format("%-15.15s", paciente.getEndereco().getRua());
-            corpo += String.format("%-15.15s", paciente.getEndereco().getCidade());
-            corpo += String.format("%-15.15s", paciente.getEndereco().getRua());
-            corpo += String.format("%-15.15s", paciente.getEndereco().getRua());
-
+            corpo = "03";
+            corpo += String.format("%-6.6s", null);
+            corpo += String.format("%-60.60s", paciente.getEndereco().getRua());
+            corpo += String.format("%-30.30s", paciente.getEndereco().getBairro());
+            corpo += String.format("%-9.9s", paciente.getEndereco().getCep());
+            corpo += String.format("%-5.5s", paciente.getEndereco().getNumero());
+            corpo += String.format("%-21.21s", paciente.getEndereco().getComplemento());
+            corpo += String.format("%-20.20s", paciente.getEndereco().getCidade());
+            corpo += String.format("%-2.2s", paciente.getEndereco().getUf());
 
             gravaRegistro(corpo, nomeArq);
             contaRegDados++;
@@ -191,13 +198,14 @@ public class Utils {
         BufferedReader entrada = null;
         String registro, tipoRegistro;
 
-        String nome, email, cpf, telefoneFixo, telefoneCelular, rua,;
+        String nome, email, cpf, telefoneFixo, telefoneCelular, rua, bairro, numero, complemento, cep, cidade, uf;
         LocalDate dataDeNascimento;
 
         int contaRegDadoLido = 0;
         int qtdRegDadoGravado;
 
-        List<Paciente> listaLida = new ArrayList();
+        List<Paciente> listaLidaPaciente = new ArrayList();
+        List<Endereco> listaLidaEndereco = new ArrayList();
 
         // try-catch para abrir o arquivo
         try {
@@ -214,11 +222,14 @@ public class Utils {
 
             while (registro != null) {
                 tipoRegistro = registro.substring(0, 2);
+
                 if (tipoRegistro.equals("00")) {
                     System.out.println("Registro de Header");
                     System.out.println("Tipo do arquivo: " + registro.substring(2, 14));
                     System.out.println("Data e hora da gravação: " + registro.substring(14, 33));
                     System.out.println("Versão do documento: " + registro.substring(33, 35));
+
+
                 } else if (tipoRegistro.equals("01")) {
                     System.out.println("Registro de Trailer");
                     qtdRegDadoGravado = Integer.valueOf(registro.substring(2, 12));
@@ -229,24 +240,37 @@ public class Utils {
                         System.out.println("Quantidade de registros lidos não é compatível com " +
                                 " quantidade de registros gravados");
                     }
+
                 } else if (tipoRegistro.equals("02")) {
                     System.out.println("Registro de Corpo");
-                    nome = registro.substring(15, 65).trim();
-                    email = registro.substring(7, 15).trim();
-                    cpf = registro.substring(7, 15).trim();
-                    dataDeNascimento = LocalDate.parse(registro.substring(7, 15),
-                            DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                    telefoneCelular = registro.substring(7, 15).trim();
-                    telefoneFixo = registro.substring(7, 15).trim();
-                    e = registro.substring(7, 15).trim();
-
+                    nome = registro.substring(8, 48).trim();
+                    email = registro.substring(48, 90).trim();
+                    cpf = registro.substring(90, 101).trim();
+                    dataDeNascimento = LocalDate.parse(registro.substring(101, 111), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                    telefoneFixo = registro.substring(111, 125).trim();
+                    telefoneCelular = registro.substring(125, 140).trim();
 
                     contaRegDadoLido++;
 
-                    Paciente paciente = new Paciente(nome, email, cpf, dataDeNascimento, telefoneFixo, telefoneCelular, endereco);
-                    listaLida.add(paciente);
+                    Paciente paciente = new Paciente(nome, email, cpf, dataDeNascimento, telefoneFixo, telefoneCelular);
+                    listaLidaPaciente.add(paciente);
 
-                } else {
+                } else if (tipoRegistro.equals("03")) {
+
+                        rua = registro.substring(8, 68).trim();
+                        bairro = registro.substring(68, 98).trim();
+                        cep = registro.substring(98, 107).trim();
+                        numero = registro.substring(107,112).trim();
+                        complemento = registro.substring(112, 133).trim();
+                        cidade = registro.substring(133, 153).trim();
+                        uf = registro.substring(153, 155).trim();
+
+                        contaRegDadoLido++;
+
+                        Endereco endereco = new Endereco(null,rua,bairro,cep,numero,complemento,cidade,uf);
+                    listaLidaEndereco.add(endereco);
+
+                    } else {
                     System.out.println("Tipo de registro inválido!");
                 }
 
@@ -261,8 +285,9 @@ public class Utils {
 
         // Exibindo a listaLida
         System.out.println("\nConteúdo da lista lida do arquivo");
-        for (Paciente paciente : listaLida) {
-            System.out.println(paciente);
+        for (int i = 0; i < listaLidaPaciente.size(); i++) {
+            System.out.println(listaLidaPaciente.get(i));
+            System.out.println(listaLidaEndereco.get(i));
         }
 
     }

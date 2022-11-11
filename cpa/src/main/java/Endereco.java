@@ -29,6 +29,10 @@ public class Endereco {
         this.uf = uf;
     }
 
+    public Endereco() {
+
+    }
+
     public Long getId() {
         return id;
     }
