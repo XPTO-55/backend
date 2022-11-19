@@ -1,5 +1,6 @@
 package br.com.cpa.spring.modules.user.patient.services;
 
+import br.com.cpa.spring.errors.ResourceAlreadyExists;
 import br.com.cpa.spring.models.Address;
 import br.com.cpa.spring.models.Patient;
 import br.com.cpa.spring.models.Role;
@@ -9,8 +10,10 @@ import br.com.cpa.spring.modules.user.patient.dtos.CreatePatientDTO;
 import br.com.cpa.spring.repositories.AddressRepository;
 import br.com.cpa.spring.repositories.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Set;
 
@@ -35,7 +38,8 @@ public class CreatePatientService {
             Patient emailAlreadyExists = patientRepository.findByEmail(createUserData.getEmail());
 
             if (emailAlreadyExists != null) {
-                throw new Error("Email já cadastrado");
+                System.out.println("AQUIIIIIIIIIIIIII ================");
+                throw new ResourceAlreadyExists("Email já cadastrado");
             }
 
             Patient patient = new Patient();

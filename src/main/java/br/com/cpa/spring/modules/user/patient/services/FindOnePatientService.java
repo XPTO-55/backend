@@ -3,7 +3,9 @@ package br.com.cpa.spring.modules.user.patient.services;
 import br.com.cpa.spring.models.Patient;
 import br.com.cpa.spring.modules.user.patient.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -21,7 +23,7 @@ public class FindOnePatientService {
         Optional<Patient> patientExists = patientRepository.findById(id);
 
         if (patientExists.isEmpty()) {
-            throw new Error("User not exists");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado");
         }
 
         return patientExists.get();

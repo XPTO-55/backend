@@ -5,7 +5,9 @@ import br.com.cpa.spring.models.Role;
 import br.com.cpa.spring.modules.user.patient.PatientRepository;
 import br.com.cpa.spring.modules.user.patient.dtos.CreateUserRoleDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +24,7 @@ public class CreateUserRoleService {
         List<Role> roles = new ArrayList();
 
         if (userExists.isEmpty()) {
-            throw new Error("User does not exists");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado");
         }
 
         roles = createUserRoleDTO.getIdsRoles()

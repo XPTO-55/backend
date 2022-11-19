@@ -3,11 +3,7 @@ package br.com.cpa.spring.models;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -51,16 +47,18 @@ public abstract class User {
     @Column(name = "phone")
     private String telefoneCelular;
 
-    @Column
-    @ElementCollection(targetClass = Role.class)
     @JoinTable(
             name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id", unique = false),
-            inverseJoinColumns = @JoinColumn(name = "role_id", unique = false)
+            joinColumns = {
+                    @JoinColumn(name = "user_id", referencedColumnName = "user_id", unique = false)
+            }, inverseJoinColumns = {
+                    @JoinColumn(name = "role_id", referencedColumnName = "role_id", unique = false)
+            }
     )
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Role> roles = new HashSet<>();
-    @OneToOne(fetch = FetchType.EAGER)
+
+    @OneToOne(fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "address_id", referencedColumnName = "address_id")
     private Address address;
 

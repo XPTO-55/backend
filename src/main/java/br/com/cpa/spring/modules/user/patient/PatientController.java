@@ -1,20 +1,13 @@
 package br.com.cpa.spring.modules.user.patient;
 
 import java.util.List;
-import java.util.UUID;
-
 import javax.validation.Valid;
 
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,47 +45,25 @@ public class PatientController {
 
     @GetMapping
     @Operation(summary = "Get all patients")
-    public ResponseEntity index() {
-        try {
-            List<Patient> patients = findPatientService.execute();
-            int status = patients.isEmpty() ? 204 : 200;
-            return ResponseEntity.status(status).body(patients);
-        } catch (Exception err) {
-            return ResponseEntity.status(400).body(err.getMessage());
-        }
+    public ResponseEntity<List<Patient>> index() {
+        List<Patient> patients = findPatientService.execute();
+        int status = patients.isEmpty() ? 204 : 200;
+        return ResponseEntity.status(status).body(patients);
     }
 //    @PreAuthorize("hasRole('ADMIN')")
 
     @PostMapping
     @Operation(summary = "Create new patient")
-    public ResponseEntity store(@RequestBody @Valid CreatePatientDTO user) {
-        try {
-            Patient patient = createPatientService.execute(user);
-            return ResponseEntity.status(201).body(patient);
-        } catch (Exception err) {
-            return ResponseEntity.status(400).body(err.getMessage());
-        }
+    public ResponseEntity<Patient> store(@RequestBody @Valid CreatePatientDTO user) {
+        Patient patient = createPatientService.execute(user);
+        return ResponseEntity.status(201).body(patient);
     }
-
-//    @PostMapping("/roles")
-//    public ResponseEntity roles(@RequestBody @Valid CreateProfissionalRoleDTO userRoleDTO) {
-//        try {
-//            Patient patient = createUserRoleService.execute(userRoleDTO);
-//            return ResponseEntity.status(201).body(patient);
-//        } catch (Exception err) {
-//            return ResponseEntity.status(400).body(err.getMessage());
-//        }
-//    }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get existing specific patient by ID")
-    public ResponseEntity show(@PathVariable Long id) {
-        try {
-            Patient patient = findOnePatientService.execute(id);
-            return ResponseEntity.status(200).body(patient);
-        } catch (Exception err) {
-            return ResponseEntity.status(400).body(err.getMessage());
-        }
+    public ResponseEntity<Patient> show(@PathVariable Long id) {
+        Patient patient = findOnePatientService.execute(id);
+        return ResponseEntity.status(200).body(patient);
     }
 
     @PutMapping("/{id}")
@@ -104,7 +75,7 @@ public class PatientController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete existing specific patient by ID")
-    public ResponseEntity destroy(@PathVariable Long id) {
+    public ResponseEntity<Void> destroy(@PathVariable Long id) {
         deletePatientService.execute(id);
         return ResponseEntity.status(204).build();
     }

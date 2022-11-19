@@ -3,7 +3,9 @@ package br.com.cpa.spring.modules.user.professional.services;
 import br.com.cpa.spring.models.Profissional;
 import br.com.cpa.spring.modules.user.professional.ProfissionalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -20,7 +22,7 @@ public class FindOneProfissionalService {
         Optional<Profissional> professionalExists = professionalRepository.findById(id);
 
         if (professionalExists.isEmpty()) {
-            throw new Error("User not exists");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Profissional não encontrado");
         }
 
         return professionalExists.get();

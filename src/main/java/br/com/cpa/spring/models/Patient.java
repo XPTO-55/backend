@@ -4,8 +4,6 @@ import javax.persistence.*;
 
 import lombok.*;
 
-import java.util.UUID;
-
 // Esse @Data já cria os getters, setters, contrutor e o toString() da classe
 @Data
 // Esse @NoArgsConstructor cria um construtor vazio

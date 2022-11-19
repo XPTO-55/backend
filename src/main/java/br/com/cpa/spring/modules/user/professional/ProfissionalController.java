@@ -38,47 +38,25 @@ public class ProfissionalController {
 
     @GetMapping
     @Operation(summary = "Get all professionals")
-    public ResponseEntity index() {
-        try {
-            List<Profissional> professionals = findProfissionalService.execute();
-            int status = professionals.isEmpty() ? 204 : 200;
-            return ResponseEntity.status(status).body(professionals);
-        } catch (Exception err) {
-            return ResponseEntity.status(400).body(err.getMessage());
-        }
+    public ResponseEntity<List<Profissional>> index() {
+        List<Profissional> professionals = findProfissionalService.execute();
+        int status = professionals.isEmpty() ? 204 : 200;
+        return ResponseEntity.status(status).body(professionals);
     }
 //    @PreAuthorize("hasRole('ADMIN')")
 
     @PostMapping
     @Operation(summary = "Create new professional")
-    public ResponseEntity store(@RequestBody @Valid CreateProfissionalDTO user) {
-        try {
-            Profissional professional = createProfissionalService.execute(user);
-            return ResponseEntity.status(201).body(professional);
-        } catch (Exception err) {
-            return ResponseEntity.status(400).body(err.getMessage());
-        }
+    public ResponseEntity<Profissional> store(@RequestBody @Valid CreateProfissionalDTO user) {
+        Profissional professional = createProfissionalService.execute(user);
+        return ResponseEntity.status(201).body(professional);
     }
-
-//    @PostMapping("/roles")
-//    public ResponseEntity roles(@RequestBody @Valid CreateProfissionalRoleDTO userRoleDTO) {
-//        try {
-//            Profissional professional = createUserRoleService.execute(userRoleDTO);
-//            return ResponseEntity.status(201).body(professional);
-//        } catch (Exception err) {
-//            return ResponseEntity.status(400).body(err.getMessage());
-//        }
-//    }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get existing specific professional by ID")
-    public ResponseEntity show(@PathVariable Long id) {
-        try {
-            Profissional professional = findOneProfissionalService.execute(id);
-            return ResponseEntity.status(200).body(professional);
-        } catch (Exception err) {
-            return ResponseEntity.status(400).body(err.getMessage());
-        }
+    public ResponseEntity<Profissional> show(@PathVariable Long id) {
+        Profissional professional = findOneProfissionalService.execute(id);
+        return ResponseEntity.status(200).body(professional);
     }
 
     @PutMapping("/{id}")
@@ -90,7 +68,7 @@ public class ProfissionalController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete existing specific professional by ID")
-    public ResponseEntity destroy(@PathVariable Long id) {
+    public ResponseEntity<Void> destroy(@PathVariable Long id) {
         deleteProfissionalService.execute(id);
         return ResponseEntity.status(204).build();
     }

@@ -1,8 +1,11 @@
 package br.com.cpa.spring.config.security.jwt;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -10,7 +13,9 @@ import java.util.Map;
 import java.util.function.Function;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 
@@ -37,7 +42,18 @@ public class Util {
     }
 
     private Claims getAllClaims(String token) {
+        // try {
         return Jwts.parser().setSigningKey(JWT_SECRET_KEY).parseClaimsJws(token).getBody();
+            // } catch (ExpiredJwtException ex) {
+            // throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token expired");
+            // } catch (MalformedJwtException ex) {
+            // throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid token");
+            // } catch (BadCredentialsException ex) {
+            // throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Bad
+            // Credentials");
+            // } catch (Exception ex) {
+            // throw ex;
+            // }
     }
 
     private Boolean verifyTokenExpired(String token) {

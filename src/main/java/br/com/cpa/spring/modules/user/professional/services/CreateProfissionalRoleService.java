@@ -5,7 +5,9 @@ import br.com.cpa.spring.models.Role;
 import br.com.cpa.spring.modules.user.professional.ProfissionalRepository;
 import br.com.cpa.spring.modules.user.professional.dtos.CreateProfissionalRoleDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +24,7 @@ public class CreateProfissionalRoleService {
         List<Role> roles = new ArrayList();
 
         if (userExists.isEmpty()) {
-            throw new Error("User does not exists");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Profissional não encontrado");
         }
 
         roles = createUserRoleDTO.getIdsRoles()

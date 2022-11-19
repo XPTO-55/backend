@@ -17,10 +17,8 @@ public class FindPatientService {
     public PatientRepository patientRepository;
 
     public List<Patient> execute() {
-
-        // utilizando as funçoes do repositoru para buscar todos os usuários
+        // utilizando as funçoes do repository para buscar todos os usuários
         List<Patient> patients = patientRepository.findAllAndRoles();
-
         return patients;
     }
 }
