@@ -38,7 +38,6 @@ public class CreatePatientService {
             Patient emailAlreadyExists = patientRepository.findByEmail(createUserData.getEmail());
 
             if (emailAlreadyExists != null) {
-                System.out.println("AQUIIIIIIIIIIIIII ================");
                 throw new ResourceAlreadyExists("Email já cadastrado");
             }
 
@@ -49,6 +48,7 @@ public class CreatePatientService {
             patient.setTelefoneCelular(createUserData.getPhone());
             patient.setDataDeNascimento(createUserData.getBirthday());
             patient.setEmail(createUserData.getEmail());
+            patient.setAbout(createUserData.getAbout());
             patient.setPassword(passwordEncoder().encode(createUserData.getPassword()));
 
             if (createUserData.getAddress() != null) {

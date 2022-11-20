@@ -32,22 +32,24 @@ public class LoginService {
 
     public ResponseEntity<LoginResponseDTO> login(LoginRequestDTO loginRequest) throws Exception {
 
-            Authentication authentication = securityConfig.authenticationManagerBean().authenticate(
-                            new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),
-                                            loginRequest.getPassword()));
+        Authentication authentication = securityConfig.authenticationManagerBean().authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),
+                        loginRequest.getPassword()));
 
-            final UserDetails userDetails = userAuthenticationService
-                            .loadUserByUsername(loginRequest.getEmail());
+        final UserDetails userDetails = userAuthenticationService
+                .loadUserByUsername(loginRequest.getEmail());
 
-            UserPrincipal appUser = (UserPrincipal) authentication.getPrincipal();
+        UserPrincipal appUser = (UserPrincipal) authentication.getPrincipal();
 
         final String jwtToken = util.generateToken(userDetails);
 
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(appUser.getUser().getId());
 
         return ResponseEntity.ok(
+                // String jwtToken, String type, String refreshToken, String email, String
+                // username, Long id
                         new LoginResponseDTO(jwtToken, "Bearer", refreshToken.getToken(), appUser.getUsername(),
-                                        appUser.getUser().getId()));
+                        appUser.getUser().getName(), appUser.getUser().getId()));
     }
 
 }

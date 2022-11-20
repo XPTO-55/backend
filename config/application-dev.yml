@@ -13,7 +13,7 @@ spring:
     hibernate:
       ddl-auto: update
 jwt:
-  expiration: 90000000
+  expiration: 900000000
   secret: javeiroscpa
 logging:
   level:

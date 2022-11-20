@@ -22,6 +22,12 @@ public class UpdateProfissionalDTO {
     @CPF
     private String cpf;
 
+    private String especialidade;
+
+    private String graduacao;
+
+    private String about;
+
     @PastOrPresent
     private LocalDate birthday;
 

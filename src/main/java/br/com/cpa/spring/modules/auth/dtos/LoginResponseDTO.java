@@ -4,16 +4,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 @Getter
 @Setter
 public class LoginResponseDTO implements Serializable {
 
-    public LoginResponseDTO(String jwtToken, String type, String refreshToken, String username, Long id) {
+    public LoginResponseDTO(String jwtToken, String type, String refreshToken, String email, String username, Long id) {
         this.jwtToken = jwtToken;
         this.type = type;
         this.refreshToken = refreshToken;
+        this.email = email;
         this.username = username;
         this.id = id;
     }
@@ -22,6 +22,7 @@ public class LoginResponseDTO implements Serializable {
     private String type = "Bearer";
     private String refreshToken;
     private String username;
+    private String email;
     private Long id;
 
 

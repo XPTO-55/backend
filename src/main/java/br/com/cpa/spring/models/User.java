@@ -3,6 +3,12 @@ package br.com.cpa.spring.models;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.*;
 
 import java.time.LocalDate;
@@ -16,7 +22,9 @@ import java.util.Set;
 @NoArgsConstructor
 // Esse MappedSuperclass diz que é uma super classe
 @MappedSuperclass
-public abstract class User {
+@SQLDelete(sql = "UPDATE users SET deleted_at=now() WHERE user_id=?")
+@Where(clause = "deleted_at NOT IS NULL")
+public abstract class User extends BaseEntity {
     @Id
     @GeneratedValue
     @Column(name = "user_id")
@@ -25,6 +33,9 @@ public abstract class User {
     @NotBlank
     @Column(name = "name")
     private String name;
+
+    @Column(name = "profile_url")
+    private String profileUrl;
 
     @NotBlank
     @Email
@@ -37,6 +48,9 @@ public abstract class User {
 
     @Column(name = "cpf")
     private String cpf;
+
+    @Column(name = "about")
+    private String about;
 
     @Column(name = "birthday")
     private LocalDate dataDeNascimento;
@@ -55,14 +69,28 @@ public abstract class User {
                     @JoinColumn(name = "role_id", referencedColumnName = "role_id", unique = false)
             }
     )
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
     private Set<Role> roles = new HashSet<>();
 
-    @OneToOne(fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST,
+                    CascadeType.REFRESH }, fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "profissional")
+    @JsonManagedReference
+    private Set<Rating> ratings = new HashSet<>();
+
+    @OneToOne(fetch = FetchType.EAGER, orphanRemoval = true, cascade = { CascadeType.MERGE, CascadeType.PERSIST,
+                    CascadeType.REFRESH })
     @JoinColumn(name = "address_id", referencedColumnName = "address_id")
     private Address address;
+
+    // @OneToOne(mappedBy = "refreshToken")
+    // private RefreshToken refreshToken;
 
     public void addRole(Role role) {
         this.roles.add(role);
     }
+
+    // @PreRemove
+    // public void delete() {
+    // this.setDeletedAt(new Date());
+    // }
 }

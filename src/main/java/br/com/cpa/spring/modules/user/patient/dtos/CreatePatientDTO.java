@@ -26,6 +26,8 @@ public class CreatePatientDTO {
     @CPF
     private String cpf;
 
+    private String about;
+
     @PastOrPresent
     private LocalDate birthday;
 

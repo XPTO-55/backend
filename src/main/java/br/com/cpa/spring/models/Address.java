@@ -1,11 +1,9 @@
 package br.com.cpa.spring.models;
 
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.geo.Point;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 @Data
 @Entity

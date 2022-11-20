@@ -23,6 +23,8 @@ public class UpdatePatientDTO {
     @CPF
     private String cpf;
 
+    private String about;
+
     @PastOrPresent
     private LocalDate birthday;
 

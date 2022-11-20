@@ -41,6 +41,9 @@ public class CreateProfissionalService {
             Profissional profissional = new Profissional();
             profissional.setName(createUserData.getName());
             profissional.setCpf(createUserData.getCpf());
+            profissional.setAbout(createUserData.getAbout());
+            profissional.setGraduacao(createUserData.getGraduacao());
+            profissional.setEspecialidade(createUserData.getEspecialidade());
             profissional.setTelefoneFixo(createUserData.getAddressline());
             profissional.setTelefoneCelular(createUserData.getPhone());
             profissional.setDataDeNascimento(createUserData.getBirthday());

@@ -17,8 +17,8 @@ public class FindProfissionalService {
 
     public List<Profissional> execute() {
 
-        // utilizando as funçoes do repositoru para buscar todos os usuários
-        List<Profissional> professional = profissionalRepository.findAllAndRoles();
+        // utilizando as funçoes do repository para buscar todos os usuários
+        List<Profissional> professional = profissionalRepository.findAllAndRatings();
 
         return professional;
     }
