@@ -22,6 +22,7 @@ public class RefreshTokenService {
 
     @Autowired
     private RefreshTokenRepository refreshTokenRepository;
+
     @Autowired
     private PatientRepository patientRepository;
 

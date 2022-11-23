@@ -23,6 +23,12 @@ logging:
     org:
       hibernate:
         type: trace
+aws:
+  s3:
+    region: us-east-1
+    key: AKIAY5C6G5UAUB5QLUC6
+    secret: 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
+    bucket: cpausers
 
 
 

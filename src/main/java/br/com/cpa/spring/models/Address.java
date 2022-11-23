@@ -37,8 +37,4 @@ public class Address {
 
     @Column(columnDefinition = "POINT")
     private Point coordenates; // Coordenadas
-
-//    @OneToOne(mappedBy = "address")
-//    private Patient user;
-
 }

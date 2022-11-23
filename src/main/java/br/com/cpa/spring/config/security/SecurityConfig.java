@@ -51,9 +51,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors();
-        http
-                .csrf().disable()
-                .authorizeHttpRequests()
+        http.csrf().disable();
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        http.authorizeHttpRequests()
                 .antMatchers(HttpHeaders.ALLOW).permitAll()
                 .antMatchers(HttpMethod.POST, "/patients/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/professionals/**").permitAll()
@@ -62,9 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/auth/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
 
         http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
 
@@ -78,4 +77,35 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+<<<<<<< Updated upstream
+=======
+
+    // @Bean
+    // public PasswordEncoder passwordEncoder() {
+    // String encodingId = "bcrypt";
+    // Map<String, PasswordEncoder> encoders = new HashMap<>();
+    // encoders.put(encodingId, new BCryptPasswordEncoder());
+    // return new DelegatingPasswordEncoder(encodingId, encoders);
+    // }
+
+    // @Bean
+    // protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception
+    // {
+    // http
+    // .csrf().disable()
+    // .authorizeHttpRequests()
+    // .antMatchers(HttpMethod.POST, "/login").permitAll()
+    // .antMatchers(SWAGGER_URL).permitAll()
+    // .antMatchers(HttpMethod.POST, "/patients").permitAll()
+    // .anyRequest().authenticated()
+    // .and()
+    // .httpBasic();
+    // return http.build();
+    // }
+
+    // @Bean
+    // public UserDetailsService userDetailsService() {
+    // return new CustomUserDetailsService()
+    // }
+>>>>>>> Stashed changes
 }

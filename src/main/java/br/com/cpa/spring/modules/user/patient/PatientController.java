@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.apache.tomcat.util.http.fileupload.UploadContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.cpa.spring.models.Patient;
 import br.com.cpa.spring.modules.user.patient.services.*;
 import br.com.cpa.spring.modules.user.patient.dtos.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @Tag(name = "Patient", description = "Patients Routes")
@@ -31,8 +33,6 @@ import br.com.cpa.spring.modules.user.patient.dtos.*;
 public class PatientController {
     @Autowired
     public CreatePatientService createPatientService;
-    @Autowired
-    public CreateUserRoleService createUserRoleService;
 
     @Autowired
     public FindPatientService findPatientService;
@@ -56,9 +56,10 @@ public class PatientController {
         int status = patients.isEmpty() ? 204 : 200;
         return ResponseEntity.status(status).body(patients);
     }
+
 //    @PreAuthorize("hasRole('ADMIN')")
 
-    @PostMapping
+    @PostMapping(value = "/", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @Operation(summary = "Create new patient")
     public ResponseEntity<Patient> store(@RequestBody @Valid CreatePatientDTO user) {
         Patient patient = createPatientService.execute(user);
