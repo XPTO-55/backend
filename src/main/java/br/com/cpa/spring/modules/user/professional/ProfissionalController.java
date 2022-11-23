@@ -36,6 +36,9 @@ public class ProfissionalController {
     @Autowired
     public DeleteProfissionalService deleteProfissionalService;
 
+    @Autowired
+    public updateProfessionalProfileImage updatePatientProfileImage;
+
     @GetMapping
     @Operation(summary = "Get all professionals")
     public ResponseEntity<List<Profissional>> index() {
@@ -71,6 +74,16 @@ public class ProfissionalController {
     public ResponseEntity<Void> destroy(@PathVariable Long id) {
         deleteProfissionalService.execute(id);
         return ResponseEntity.status(204).build();
+    }
+
+    @PatchMapping(value = "/{id}/profileImage", consumes = "image/*")
+    public ResponseEntity<Void> patchProfileImage(
+            @PathVariable Long id,
+            @RequestBody byte[] novaFoto) {
+
+        updatePatientProfileImage.execute(id, novaFoto);
+
+        return ResponseEntity.status(200).build();
     }
 
 }

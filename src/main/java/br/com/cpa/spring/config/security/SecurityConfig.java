@@ -77,35 +77,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-<<<<<<< Updated upstream
-=======
-
-    // @Bean
-    // public PasswordEncoder passwordEncoder() {
-    // String encodingId = "bcrypt";
-    // Map<String, PasswordEncoder> encoders = new HashMap<>();
-    // encoders.put(encodingId, new BCryptPasswordEncoder());
-    // return new DelegatingPasswordEncoder(encodingId, encoders);
-    // }
-
-    // @Bean
-    // protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception
-    // {
-    // http
-    // .csrf().disable()
-    // .authorizeHttpRequests()
-    // .antMatchers(HttpMethod.POST, "/login").permitAll()
-    // .antMatchers(SWAGGER_URL).permitAll()
-    // .antMatchers(HttpMethod.POST, "/patients").permitAll()
-    // .anyRequest().authenticated()
-    // .and()
-    // .httpBasic();
-    // return http.build();
-    // }
-
-    // @Bean
-    // public UserDetailsService userDetailsService() {
-    // return new CustomUserDetailsService()
-    // }
->>>>>>> Stashed changes
 }

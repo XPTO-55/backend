@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import org.apache.tomcat.util.http.fileupload.UploadContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.cpa.spring.models.Patient;
 import br.com.cpa.spring.modules.user.patient.services.*;
 import br.com.cpa.spring.modules.user.patient.dtos.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @Tag(name = "Patient", description = "Patients Routes")
@@ -47,7 +45,7 @@ public class PatientController {
     public DeletePatientService deletePatientService;
 
     @Autowired
-    public updateProfileImage updateProfileImage;
+    public UpdatePatientProfileImage updatePatientProfileImage;
 
     @GetMapping
     @Operation(summary = "Get all patients")
@@ -92,7 +90,7 @@ public class PatientController {
             @PathVariable Long id,
             @RequestBody byte[] novaFoto) {
 
-        updateProfileImage.execute(id, novaFoto);
+        updatePatientProfileImage.execute(id, novaFoto);
 
         return ResponseEntity.status(200).build();
     }
