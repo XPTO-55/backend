@@ -9,7 +9,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.UUID;
 
 // Esse @Data já cria os getters, setters, contrutor e o toString() da classe
 @Data

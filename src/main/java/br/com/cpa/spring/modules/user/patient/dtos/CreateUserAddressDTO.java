@@ -3,8 +3,6 @@ package br.com.cpa.spring.modules.user.patient.dtos;
 import lombok.Data;
 import org.springframework.data.geo.Point;
 
-import javax.persistence.Column;
-
 @Data
 public class CreateUserAddressDTO {
 

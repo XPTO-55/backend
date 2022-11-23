@@ -22,7 +22,7 @@ public class CreateProfissionalDTO {
     @NotBlank
     private String name;
 
-    @CPF
+    // @CPF
     private String cpf;
 
     private String especialidade;

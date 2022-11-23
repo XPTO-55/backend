@@ -1,6 +1,5 @@
 package br.com.cpa.spring.modules.user.patient.dtos;
 
-import br.com.cpa.spring.models.Address;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,7 +22,7 @@ public class CreatePatientDTO {
     @NotBlank
     private String name;
 
-    @CPF
+    // @CPF
     private String cpf;
 
     private String about;

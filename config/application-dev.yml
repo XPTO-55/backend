@@ -12,6 +12,9 @@ spring:
     database: mysql
     hibernate:
       ddl-auto: update
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/cpa
 jwt:
   expiration: 900000000
   secret: javeiroscpa
