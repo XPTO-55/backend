@@ -28,8 +28,8 @@
         <java.version>11</java.version>
     </properties>
     <dependencies>
-       <!-- SDK -->
-       <dependency>
+        <!-- SDK -->
+        <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-s3</artifactId>
             <version>1.11.1033</version>
