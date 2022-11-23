@@ -8,10 +8,15 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -37,7 +42,7 @@ public class ProfissionalController {
     public DeleteProfissionalService deleteProfissionalService;
 
     @Autowired
-    public updateProfessionalProfileImage updatePatientProfileImage;
+    public ProfessionalProfileImage professionalProfileImage;
 
     @GetMapping
     @Operation(summary = "Get all professionals")
@@ -76,12 +81,27 @@ public class ProfissionalController {
         return ResponseEntity.status(204).build();
     }
 
+    @GetMapping(value = "/{id}/profileImage", produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<byte[]> getProfileImage(
+            @PathVariable Long id) {
+
+        byte[] foto;
+        try {
+            foto = professionalProfileImage.get(id);
+            return ResponseEntity.status(200).header("content-disposition", "attachment; filename=\"userprofile.jpg\"")
+                    .body(foto);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Não foi possível carregar a imagem");
+        }
+    }
+
     @PatchMapping(value = "/{id}/profileImage", consumes = "image/*")
     public ResponseEntity<Void> patchProfileImage(
             @PathVariable Long id,
             @RequestBody byte[] novaFoto) {
 
-        updatePatientProfileImage.execute(id, novaFoto);
+        professionalProfileImage.save(id, novaFoto);
 
         return ResponseEntity.status(200).build();
     }

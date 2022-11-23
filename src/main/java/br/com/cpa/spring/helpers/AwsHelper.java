@@ -25,13 +25,11 @@ public class AwsHelper {
   private String s3BucketName;
 
   // @Async annotation ensures that the method is executed in a different thread
-  @Async
   public S3ObjectInputStream findByName(String fileName) {
     LOG.info("Downloading file with name {}", fileName);
     return amazonS3.getObject(s3BucketName, fileName).getObjectContent();
   }
 
-  @Async
   public void save(final byte[] bytesFile, final String fileName) {
     try {
       InputStream file = new ByteArrayInputStream(bytesFile);

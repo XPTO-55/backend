@@ -1,5 +1,6 @@
 package br.com.cpa.spring.modules.user.patient;
 
+import java.io.IOException;
 import java.util.List;
 import javax.validation.Valid;
 
@@ -8,6 +9,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import br.com.cpa.spring.models.Patient;
 import br.com.cpa.spring.modules.user.patient.services.*;
@@ -45,7 +48,7 @@ public class PatientController {
     public DeletePatientService deletePatientService;
 
     @Autowired
-    public UpdatePatientProfileImage updatePatientProfileImage;
+    public PatientProfileImage updatePatientProfileImage;
 
     @GetMapping
     @Operation(summary = "Get all patients")
@@ -85,12 +88,27 @@ public class PatientController {
         return ResponseEntity.status(204).build();
     }
 
+    @GetMapping(value = "/{id}/profileImage", produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<byte[]> getProfileImage(
+            @PathVariable Long id) {
+
+        byte[] foto;
+        try {
+            foto = updatePatientProfileImage.get(id);
+            return ResponseEntity.status(200).header("content-disposition", "attachment; filename=\"userprofile.jpg\"")
+                    .body(foto);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Não foi possível carregar a imagem");
+        }
+    }
+
     @PatchMapping(value = "/{id}/profileImage", consumes = "image/*")
     public ResponseEntity<Void> patchProfileImage(
             @PathVariable Long id,
             @RequestBody byte[] novaFoto) {
 
-        updatePatientProfileImage.execute(id, novaFoto);
+        updatePatientProfileImage.save(id, novaFoto);
 
         return ResponseEntity.status(200).build();
     }
