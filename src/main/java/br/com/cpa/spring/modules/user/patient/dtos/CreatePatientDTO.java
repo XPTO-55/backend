@@ -30,7 +30,7 @@ public class CreatePatientDTO {
     @PastOrPresent
     private LocalDate birthday;
 
-    private String addressline;
+    private String landline;
 
     private String phone;
 

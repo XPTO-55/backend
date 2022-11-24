@@ -44,7 +44,7 @@ public class CreatePatientService {
             Patient patient = new Patient();
             patient.setName(createUserData.getName());
             patient.setCpf(createUserData.getCpf());
-            patient.setTelefoneFixo(createUserData.getAddressline());
+            patient.setTelefoneFixo(createUserData.getLandline());
             patient.setTelefoneCelular(createUserData.getPhone());
             patient.setDataDeNascimento(createUserData.getBirthday());
             patient.setEmail(createUserData.getEmail());

@@ -49,7 +49,8 @@ public class LoginService {
                 // String jwtToken, String type, String refreshToken, String email, String
                 // username, Long id
                         new LoginResponseDTO(jwtToken, "Bearer", refreshToken.getToken(), appUser.getUsername(),
-                        appUser.getUser().getName(), appUser.getUser().getId()));
+                                        appUser.getUser().getName(), appUser.getUser().getProfileUrl(),
+                                        appUser.getUser().getId()));
     }
 
 }

@@ -33,7 +33,6 @@ public class AwsHelper {
   public void save(final byte[] bytesFile, final String fileName) {
     try {
       InputStream file = new ByteArrayInputStream(bytesFile);
-      // final String fileName = LocalDateTime.now() + "_" + file.getName();
       LOG.info("Uploading file with name {}", fileName);
       final PutObjectRequest putObjectRequest = new PutObjectRequest(s3BucketName, fileName, file, null);
       putObjectRequest.withCannedAcl(CannedAccessControlList.PublicRead);
