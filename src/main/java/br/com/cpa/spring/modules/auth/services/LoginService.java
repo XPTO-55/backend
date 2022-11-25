@@ -48,7 +48,8 @@ public class LoginService {
         return ResponseEntity.ok(
                 // String jwtToken, String type, String refreshToken, String email, String
                 // username, Long id
-                        new LoginResponseDTO(jwtToken, "Bearer", refreshToken.getToken(), appUser.getUsername(),
+                        new LoginResponseDTO(jwtToken, "Bearer", appUser.getUser().getUserType(),
+                                        refreshToken.getToken(), appUser.getUsername(),
                                         appUser.getUser().getName(), appUser.getUser().getProfileUrl(),
                                         appUser.getUser().getId()));
     }

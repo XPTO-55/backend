@@ -15,4 +15,6 @@ import lombok.*;
 @Where(clause = "deleted_at IS NULL")
 @ToString
 public class Patient extends User {
+  @Transient
+  private String userType = "patients";
 }

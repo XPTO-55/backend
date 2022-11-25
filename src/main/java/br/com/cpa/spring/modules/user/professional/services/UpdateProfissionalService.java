@@ -6,19 +6,20 @@ import br.com.cpa.spring.modules.user.professional.ProfissionalRepository;
 import br.com.cpa.spring.modules.user.professional.dtos.UpdateProfissionalDTO;
 import br.com.cpa.spring.repositories.AddressRepository;
 
+import javax.transaction.Transactional;
+
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 // Diz que essa classe uma service do sistema (Camada que contém a regra de negócio do sistema)
 @Service
-public class UpdateProfissionalService {
-    private BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
+public class UpdateProfissionalService {
     // Injeta(importa) o repository (Camada do sistema que manipula o banco de dados)
     @Autowired
     private ProfissionalRepository repository;
@@ -26,19 +27,23 @@ public class UpdateProfissionalService {
     @Autowired
     private AddressRepository addressRepository;
 
+    @Transactional
     public Profissional execute(Long id, @NotNull UpdateProfissionalDTO updateProfissionalDTO) {
+        if (!repository.existsById(id)) {
+            new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found");
+        }
         // Criando um novo paciente com os argumentos que foram passamos para  afunção
-        Profissional profissional = new Profissional();
+        Profissional profissional = repository.findById(id).get();
         profissional.setName(updateProfissionalDTO.getName());
         profissional.setCpf(updateProfissionalDTO.getCpf());
         profissional.setAbout(updateProfissionalDTO.getAbout());
+        profissional.setIdentificacao(updateProfissionalDTO.getIdentificacao());
         profissional.setGraduacao(updateProfissionalDTO.getGraduacao());
         profissional.setEspecialidade(updateProfissionalDTO.getEspecialidade());
-        profissional.setTelefoneFixo(updateProfissionalDTO.getAddressline());
-        profissional.setTelefoneCelular(updateProfissionalDTO.getPhone());
-        profissional.setDataDeNascimento(updateProfissionalDTO.getBirthday());
+        profissional.setLandline(updateProfissionalDTO.getLandline());
+        profissional.setPhone(updateProfissionalDTO.getPhone());
+        profissional.setBirthday(updateProfissionalDTO.getBirthday());
         profissional.setEmail(updateProfissionalDTO.getEmail());
-        profissional.setPassword(passwordEncoder().encode(updateProfissionalDTO.getPassword()));
 
         if (updateProfissionalDTO.getAddress() != null) {
             Address address = new Address();

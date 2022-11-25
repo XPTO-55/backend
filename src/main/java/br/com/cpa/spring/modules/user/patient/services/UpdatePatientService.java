@@ -8,10 +8,10 @@ import br.com.cpa.spring.repositories.AddressRepository;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
+import org.springframework.web.server.ResponseStatusException;
 
 // Diz que essa classe uma service do sistema (Camada que contém a regra de negócio do sistema)
 @Service
@@ -28,17 +28,19 @@ public class UpdatePatientService {
     }
 
     public Patient execute(Long id, @NotNull UpdatePatientDTO updatePatientDTO) {
+        if (!patientRepository.existsById(id)) {
+            new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found");
+        }
+
         // Criando um novo paciente com os argumentos que foram passamos para  afunção
-        Patient patient = new Patient();
-        patient.setId(id);
+        Patient patient = patientRepository.findById(id).get();
         patient.setName(updatePatientDTO.getName());
         patient.setCpf(updatePatientDTO.getCpf());
-        patient.setTelefoneFixo(updatePatientDTO.getAddressline());
-        patient.setTelefoneCelular(updatePatientDTO.getPhone());
-        patient.setDataDeNascimento(updatePatientDTO.getBirthday());
+        patient.setLandline(updatePatientDTO.getLandline());
+        patient.setPhone(updatePatientDTO.getPhone());
+        patient.setBirthday(updatePatientDTO.getBirthday());
         patient.setEmail(updatePatientDTO.getEmail());
         patient.setAbout(updatePatientDTO.getAbout());
-        patient.setPassword(passwordEncoder().encode(updatePatientDTO.getPassword()));
 
         if (updatePatientDTO.getAddress() != null) {
             Address address = new Address();

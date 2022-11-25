@@ -7,7 +7,6 @@ import org.hibernate.validator.constraints.br.CPF;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PastOrPresent;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 // Esse @Data já cria os getters, setters, contrutor e o toString() da classe
@@ -19,7 +18,7 @@ public class UpdatePatientDTO {
 
     private String rg;
 
-    @CPF
+    // @CPF
     private String cpf;
 
     private String about;
@@ -27,7 +26,7 @@ public class UpdatePatientDTO {
     @PastOrPresent
     private LocalDate birthday;
 
-    private String addressline;
+    private String landline;
 
     private String phone;
 
@@ -36,8 +35,5 @@ public class UpdatePatientDTO {
     @Email()
     @NotBlank()
     private String email;
-
-    @Size(min = 8, max = 20)
-    private String password;
 
 }

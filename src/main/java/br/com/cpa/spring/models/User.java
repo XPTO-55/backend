@@ -8,6 +8,8 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
 
 import lombok.*;
 
@@ -43,6 +45,7 @@ public abstract class User extends BaseEntity {
     private String email;
 
     @NotBlank
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password")
     private String password;
 
@@ -53,13 +56,13 @@ public abstract class User extends BaseEntity {
     private String about;
 
     @Column(name = "birthday")
-    private LocalDate dataDeNascimento;
+    private LocalDate birthday;
 
     @Column(name = "landline")
-    private String telefoneFixo;
+    private String landline;
 
     @Column(name = "phone")
-    private String telefoneCelular;
+    private String phone;
 
     @JoinTable(
             name = "users_roles",
@@ -93,4 +96,6 @@ public abstract class User extends BaseEntity {
     // public void delete() {
     // this.setDeletedAt(new Date());
     // }
+
+    public abstract String getUserType();
 }

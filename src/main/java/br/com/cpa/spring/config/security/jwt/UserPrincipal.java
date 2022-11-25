@@ -13,9 +13,11 @@ import java.util.stream.Collectors;
 public class UserPrincipal implements UserDetails {
     private List<SimpleGrantedAuthority> authorities = new ArrayList();
     private User user;
+    private String userType;
 
     public UserPrincipal(User user) {
         this.user = user;
+        this.userType = user.getUserType();
         this.authorities = user.getRoles().stream().map(role -> {
             return new SimpleGrantedAuthority("ROLE_".concat(role.getName()));
         }).collect(Collectors.toList());
