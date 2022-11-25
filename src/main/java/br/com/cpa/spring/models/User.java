@@ -98,4 +98,38 @@ public abstract class User extends BaseEntity {
     // }
 
     public abstract String getUserType();
+
+    public User(String name, String email, String cpf, LocalDate birthday, String landline, String phone,
+                    Address address) {
+            this.id = null;
+            this.name = name;
+            this.profileUrl = "";
+            this.email = email;
+            this.password = "";
+            this.cpf = cpf;
+            this.about = "";
+            this.birthday = birthday;
+            this.landline = landline;
+            this.phone = phone;
+            this.roles = new HashSet<>();
+            this.ratings = new HashSet<>();
+            this.address = address;
+    }
+
+    public User(String name, String email, String cpf, LocalDate birthday, String landline, String phone) {
+            this.id = null;
+            this.name = name;
+            this.profileUrl = "";
+            this.email = email;
+            this.password = "";
+            this.cpf = cpf;
+            this.about = "";
+            this.birthday = birthday;
+            this.landline = landline;
+            this.phone = phone;
+            this.roles = new HashSet<>();
+            this.ratings = new HashSet<>();
+            this.address = null;
+    }
+
 }
