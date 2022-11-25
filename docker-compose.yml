@@ -42,10 +42,21 @@ services:
     # Definição de qual rede aquele serviço estará utilizando
 #    networks:
 #      - postgres-compose-network
+  mongo:
+    image: mongo
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+      MONGO_INITDB_DATABASE: cpa
+    volumes:
+      - mongodb:/data/db
 # Criação dos volumes (HDs) dos serviços
 volumes:
   mysqlvol: { }
   pgdata: { }
+  mongodb: {}
 # Criação das redes dos serviços
 networks:
   mysql-compose-network:
