@@ -34,7 +34,7 @@ public class CreateProfissionalDTO {
     @PastOrPresent
     private LocalDate birthday;
 
-    private String addressline;
+    private String landline;
 
     private String phone;
 

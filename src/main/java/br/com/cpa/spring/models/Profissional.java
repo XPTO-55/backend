@@ -14,6 +14,9 @@ import lombok.*;
 @NoArgsConstructor
 @Entity(name = "professionals")
 public class Profissional extends User {
+    @Transient
+    private String userType = "professionals";
+
     @Column(name = "identification")
     private String identificacao = "none";
 

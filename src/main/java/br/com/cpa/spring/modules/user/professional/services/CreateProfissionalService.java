@@ -44,9 +44,9 @@ public class CreateProfissionalService {
             profissional.setAbout(createUserData.getAbout());
             profissional.setGraduacao(createUserData.getGraduacao());
             profissional.setEspecialidade(createUserData.getEspecialidade());
-            profissional.setTelefoneFixo(createUserData.getAddressline());
-            profissional.setTelefoneCelular(createUserData.getPhone());
-            profissional.setDataDeNascimento(createUserData.getBirthday());
+            profissional.setLandline(createUserData.getLandline());
+            profissional.setPhone(createUserData.getPhone());
+            profissional.setBirthday(createUserData.getBirthday());
             profissional.setEmail(createUserData.getEmail());
             profissional.setPassword(passwordEncoder().encode(createUserData.getPassword()));
 

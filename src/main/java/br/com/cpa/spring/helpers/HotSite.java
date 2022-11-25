@@ -5,9 +5,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+
+import br.com.cpa.spring.models.Address;
 import br.com.cpa.spring.models.Patient;
 
-public class Utils {
+public class HotSite {
 
 
     public static Integer calculaIdadePorData(LocalDate data) {
@@ -19,8 +21,8 @@ public class Utils {
         Patient aux;
         for (int i = 0; i < v.size(); i++) {
             for (int j = 0; j < v.size() - 1; j++) {
-                if (Utils.calculaIdadePorData(v.get(i).getDataDeNascimento()) < Utils
-                        .calculaIdadePorData(v.get(j).getDataDeNascimento())) {
+                if (HotSite.calculaIdadePorData(v.get(i).getBirthday()) < HotSite
+                        .calculaIdadePorData(v.get(j).getBirthday())) {
                     aux = v.get(i);
                     v.set(i, v.get(j));
                     v.set(j, aux);
@@ -53,8 +55,8 @@ public class Utils {
             saida.format("NOME;EMAIL;CPF;DATA NASCIMENTO;TELEFONE FIXO;TELEFONE MOVEL\n");
             for (int i = 0; i < lista.size(); i++) {
                 Patient p = lista.get(i);
-                saida.format("%s;%s;%s;%s;%s;%s\n", p.getNome(), p.getEmail(), p.getCpf(), p.getDataDeNascimento(),
-                        p.getTelefoneFixo(), p.getTelefoneCelular());
+                saida.format("%s;%s;%s;%s;%s;%s\n", p.getName(), p.getEmail(), p.getCpf(), p.getBirthday(),
+                        p.getLandline(), p.getPhone());
             }
         } catch (FormatterClosedException erro) {
             System.out.println(erro);
@@ -168,24 +170,24 @@ public class Utils {
             Patient paciente = lista.get(i);
             corpo = "02";
             corpo += String.format("%-6.6s", null);
-            corpo += String.format("%-40.40s", paciente.getNome());
+            corpo += String.format("%-40.40s", paciente.getName());
             corpo += String.format("%-42.42s", paciente.getEmail());
             corpo += String.format("%-11.11s", paciente.getCpf());
-            corpo += String.format("%-10.10s", paciente.getDataDeNascimento());
-            corpo += String.format("%-14.14s", paciente.getTelefoneFixo());
-            corpo += String.format("%-15.15s", paciente.getTelefoneCelular());
+            corpo += String.format("%-10.10s", paciente.getBirthday());
+            corpo += String.format("%-14.14s", paciente.getLandline());
+            corpo += String.format("%-15.15s", paciente.getPhone());
             gravaRegistro(corpo , nomeArq);
             contaRegDados++;
 
             corpo = "03";
             corpo += String.format("%-6.6s", null);
-            corpo += String.format("%-60.60s", paciente.getEndereco().getRua());
-            corpo += String.format("%-30.30s", paciente.getEndereco().getBairro());
-            corpo += String.format("%-9.9s", paciente.getEndereco().getCep());
-            corpo += String.format("%-5.5s", paciente.getEndereco().getNumero());
-            corpo += String.format("%-21.21s", paciente.getEndereco().getComplemento());
-            corpo += String.format("%-20.20s", paciente.getEndereco().getCidade());
-            corpo += String.format("%-2.2s", paciente.getEndereco().getUf());
+            corpo += String.format("%-60.60s", paciente.getAddress().getStreet());
+            corpo += String.format("%-30.30s", paciente.getAddress().getDistrict());
+            corpo += String.format("%-9.9s", paciente.getAddress().getZipcode());
+            corpo += String.format("%-5.5s", paciente.getAddress().getNumber());
+            corpo += String.format("%-21.21s", paciente.getAddress().getComplement());
+            corpo += String.format("%-20.20s", paciente.getAddress().getCity());
+            corpo += String.format("%-2.2s", paciente.getAddress().getUf());
 
             gravaRegistro(corpo, nomeArq);
             contaRegDados++;
@@ -197,9 +199,9 @@ public class Utils {
         gravaRegistro(trailer, nomeArq);
     }
 
-    public static void leArquivoTxt(String nomeArq) {
+    public static String leArquivoTxt(String nomeArq) {
         BufferedReader entrada = null;
-        String registro, tipoRegistro;
+        String registro = null, tipoRegistro;
 
         String nome, email, cpf, telefoneFixo, telefoneCelular, rua, bairro, numero, complemento, cep, cidade, uf;
         LocalDate dataDeNascimento;
@@ -208,7 +210,7 @@ public class Utils {
         int qtdRegDadoGravado;
 
         List<Patient> listaLidaPaciente = new ArrayList();
-        List<Endereco> listaLidaEndereco = new ArrayList();
+        List<Address> listaLidaEndereco = new ArrayList();
 
         // try-catch para abrir o arquivo
         try {
@@ -270,7 +272,7 @@ public class Utils {
 
                         contaRegDadoLido++;
 
-                        Endereco endereco = new Endereco(null,rua,bairro,cep,numero,complemento,cidade,uf);
+                        Address endereco = new Address(null,rua,bairro,cep,numero,complemento,cidade,uf);
                     listaLidaEndereco.add(endereco);
 
                     } else {
@@ -292,7 +294,7 @@ public class Utils {
             System.out.println(listaLidaPaciente.get(i));
             System.out.println(listaLidaEndereco.get(i));
         }
-
+        return registro;
     }
 
 }

@@ -31,5 +31,4 @@ public interface ProfissionalRepository extends JpaRepository<Profissional, Long
     @Modifying
     @Query(value = "UPDATE professionals p SET deleted_at=now() WHERE p.id=:id")
     void deleteById(@Param("id") Long id);
-
 }

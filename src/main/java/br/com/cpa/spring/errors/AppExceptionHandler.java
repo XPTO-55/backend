@@ -21,26 +21,25 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-@RestControllerAdvice
+// @RestControllerAdvice
 public class AppExceptionHandler extends ResponseEntityExceptionHandler {
 
-    // @Override
-    // protected ResponseEntity<Object> handleMethodArgumentNotValid(
-    // MethodArgumentNotValidException e, HttpHeaders headers, HttpStatus status,
-    // WebRequest request
-    // ) {
-    // Map<String, List<String>> body = new HashMap<>();
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException e, HttpHeaders headers, HttpStatus status,
+            WebRequest request) {
+        Map<String, List<String>> body = new HashMap<>();
 
-    // List<String> errors = e.getBindingResult()
-    // .getFieldErrors()
-    // .stream()
-    // .map(DefaultMessageSourceResolvable::getDefaultMessage)
-    // .collect(Collectors.toList());
+        List<String> errors = e.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(Collectors.toList());
 
-    // body.put("errors", errors);
+        body.put("errors", errors);
 
-    // return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
-    // }
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<?> responseStatusException(ResponseStatusException ex, WebRequest request) {
@@ -50,7 +49,6 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ResourceAlreadyExists.class)
     public ResponseEntity<?> resourceAlreadyExists(ResourceAlreadyExists ex, WebRequest request) {
-        System.out.println("AQUIIIIIIIIIIIIII ================");
         System.out.println(ex.getCause());
         return new ResponseEntity<>(ex, HttpStatus.NOT_FOUND);
     }
@@ -76,19 +74,18 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
 
-    // @ExceptionHandler(BadCredentialsException.class)
-    // public ResponseEntity<?> badCredentialsException(BadCredentialsException ex,
-    // WebRequest request) {
-    // // List<String> errors = new ArrayList<>();
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<?> badCredentialsException(BadCredentialsException ex,
+            WebRequest request) {
+        // List<String> errors = new ArrayList<>();
 
-    // // ex.getConstraintViolations().forEach(cv -> errors.add(cv.getMessage()));
+    // ex.getConstraintViolations().forEach(cv -> errors.add(cv.getMessage()));
 
-    // // Map<String, List<String>> result = new HashMap<>();
-    // // result.put("errors", ex);
+    // Map<String, List<String>> result = new HashMap<>();
+    // result.put("errors", ex);
 
-    // throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid
-    // credentials");
-    // }
+    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
+}
 
     // @ExceptionHandler(ExpiredJwtException.class)
     // public ResponseEntity<?> expiredJwtException(ExpiredJwtException ex,
@@ -97,11 +94,11 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
 
     // // ex.getConstraintViolations().forEach(cv -> errors.add(cv.getMessage()));
 
-    // // Map<String, List<String>> result = new HashMap<>();
-    // // result.put("errors", ex);
+// // Map<String, List<String>> result = new HashMap<>();
+// // result.put("errors", ex);
 
-    // throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token expired");
-    // }
+// throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token expired");
+// }
 
     @ExceptionHandler(value = { Exception.class })
     public ResponseEntity<Object> handleAnyException(Exception e, WebRequest request) {

@@ -8,6 +8,8 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
 
 import lombok.*;
 
@@ -43,6 +45,7 @@ public abstract class User extends BaseEntity {
     private String email;
 
     @NotBlank
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password")
     private String password;
 
@@ -53,13 +56,13 @@ public abstract class User extends BaseEntity {
     private String about;
 
     @Column(name = "birthday")
-    private LocalDate dataDeNascimento;
+    private LocalDate birthday;
 
     @Column(name = "landline")
-    private String telefoneFixo;
+    private String landline;
 
     @Column(name = "phone")
-    private String telefoneCelular;
+    private String phone;
 
     @JoinTable(
             name = "users_roles",
@@ -93,4 +96,40 @@ public abstract class User extends BaseEntity {
     // public void delete() {
     // this.setDeletedAt(new Date());
     // }
+
+    public abstract String getUserType();
+
+    public User(String name, String email, String cpf, LocalDate birthday, String landline, String phone,
+                    Address address) {
+            this.id = null;
+            this.name = name;
+            this.profileUrl = "";
+            this.email = email;
+            this.password = "";
+            this.cpf = cpf;
+            this.about = "";
+            this.birthday = birthday;
+            this.landline = landline;
+            this.phone = phone;
+            this.roles = new HashSet<>();
+            this.ratings = new HashSet<>();
+            this.address = address;
+    }
+
+    public User(String name, String email, String cpf, LocalDate birthday, String landline, String phone) {
+            this.id = null;
+            this.name = name;
+            this.profileUrl = "";
+            this.email = email;
+            this.password = "";
+            this.cpf = cpf;
+            this.about = "";
+            this.birthday = birthday;
+            this.landline = landline;
+            this.phone = phone;
+            this.roles = new HashSet<>();
+            this.ratings = new HashSet<>();
+            this.address = null;
+    }
+
 }

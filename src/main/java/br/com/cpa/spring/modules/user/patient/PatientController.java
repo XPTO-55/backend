@@ -60,7 +60,7 @@ public class PatientController {
 
 //    @PreAuthorize("hasRole('ADMIN')")
 
-    @PostMapping(value = "/", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+@PostMapping
     @Operation(summary = "Create new patient")
     public ResponseEntity<Patient> store(@RequestBody @Valid CreatePatientDTO user) {
         Patient patient = createPatientService.execute(user);

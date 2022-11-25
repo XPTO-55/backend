@@ -18,12 +18,28 @@ import java.time.LocalDate;
 @ToString
 public class Patient extends User {
     public Patient(String nome, String email, String cpf, LocalDate dataDeNascimento, String telefoneFixo, String telefoneCelular) {
+        super(
+                nome,
+                email,
+                cpf,
+                dataDeNascimento,
+                telefoneFixo,
+                telefoneCelular
+        );
     }
 
     public Patient(String nome, String email, String cpf, LocalDate dataDeNascimento, String telefoneFixo, String telefoneCelular, Address endereco) {
-    this.name = nome;
-    this.email = email;
-    this.cpf = cpf;
-    this.getDataDeNascimento =
-    }
+   super(
+           nome,
+           email,
+           cpf,
+           dataDeNascimento,
+           telefoneFixo,
+           telefoneCelular,
+           endereco
+   );
+        }
+
+  @Transient
+  private String userType = "patients";
 }

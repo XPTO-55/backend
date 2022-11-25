@@ -19,8 +19,10 @@ public class UpdateProfissionalDTO {
 
     private String rg;
 
-    @CPF
+    // @CPF
     private String cpf;
+
+    private String identificacao;
 
     private String especialidade;
 
@@ -31,7 +33,7 @@ public class UpdateProfissionalDTO {
     @PastOrPresent
     private LocalDate birthday;
 
-    private String addressline;
+    private String landline;
 
     private String phone;
 
@@ -40,8 +42,4 @@ public class UpdateProfissionalDTO {
     @Email()
     @NotBlank()
     private String email;
-
-    @Size(min = 8, max = 20)
-    private String password;
-
 }
