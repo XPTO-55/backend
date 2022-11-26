@@ -37,7 +37,7 @@ public class HotSite {
         FileWriter arq = null; // objeto que representa o arquivo de gravação
         Formatter saida = null; // objeto usado para gravar no arquivo
         Boolean deuRuim = false;
-        nomeArq += ".csv"; // Acrescenta a extensão.csv ao nome do arquivo
+        // nomeArq += ".csv"; // Acrescenta a extensão.csv ao nome do arquivo
 
         ordenarPorIdade(lista);
 
@@ -52,10 +52,10 @@ public class HotSite {
 
         // Bloco para gravar o arquivo
         try {
-            saida.format("NOME;EMAIL;CPF;DATA NASCIMENTO;TELEFONE FIXO;TELEFONE MOVEL\n");
+            saida.format("NOME,EMAIL,CPF,DATA NASCIMENTO,TELEFONE FIXO,TELEFONE MOVEL\n");
             for (int i = 0; i < lista.size(); i++) {
                 Patient p = lista.get(i);
-                saida.format("%s;%s;%s;%s;%s;%s\n", p.getName(), p.getEmail(), p.getCpf(), p.getBirthday(),
+                saida.format("%s,%s,%s,%s,%s,%s\n", p.getName(), p.getEmail(), p.getCpf(), p.getBirthday(),
                         p.getLandline(), p.getPhone());
             }
         } catch (FormatterClosedException erro) {
@@ -169,7 +169,7 @@ public class HotSite {
         for (int i = 0; i < lista.size(); i++) {
             Patient paciente = lista.get(i);
             corpo = "02";
-            corpo += String.format("%-6.6s", null);
+            corpo += String.format("%-6.6s", paciente.getId());
             corpo += String.format("%-40.40s", paciente.getName());
             corpo += String.format("%-42.42s", paciente.getEmail());
             corpo += String.format("%-11.11s", paciente.getCpf());
@@ -180,14 +180,14 @@ public class HotSite {
             contaRegDados++;
 
             corpo = "03";
-            corpo += String.format("%-6.6s", null);
-            corpo += String.format("%-60.60s", paciente.getAddress().getStreet());
-            corpo += String.format("%-30.30s", paciente.getAddress().getDistrict());
-            corpo += String.format("%-9.9s", paciente.getAddress().getZipcode());
-            corpo += String.format("%-5.5s", paciente.getAddress().getNumber());
-            corpo += String.format("%-21.21s", paciente.getAddress().getComplement());
-            corpo += String.format("%-20.20s", paciente.getAddress().getCity());
-            corpo += String.format("%-2.2s", paciente.getAddress().getUf());
+            corpo += String.format("%-6.6s", paciente.getId());
+            corpo += String.format("%-60.60s", paciente.getAddress().getStreet().toString());
+            corpo += String.format("%-30.30s", paciente.getAddress().getDistrict().toString());
+            corpo += String.format("%-9.9s", paciente.getAddress().getZipcode().toString());
+            corpo += String.format("%-5.5s", paciente.getAddress().getNumber().toString());
+            corpo += String.format("%-21.21s", paciente.getAddress().getComplement().toString());
+            corpo += String.format("%-20.20s", paciente.getAddress().getCity().toString());
+            corpo += String.format("%-2.2s", paciente.getAddress().getUf().toString());
 
             gravaRegistro(corpo, nomeArq);
             contaRegDados++;

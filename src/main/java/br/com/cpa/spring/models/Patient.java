@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @Data
 // Esse @NoArgsConstructor cria um construtor vazio
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "patients")
 @Table(name = "users")
 @Where(clause = "deleted_at IS NULL")

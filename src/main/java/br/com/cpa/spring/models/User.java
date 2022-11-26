@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -103,11 +104,11 @@ public abstract class User extends BaseEntity {
                     Address address) {
             this.id = null;
             this.name = name;
-            this.profileUrl = "";
+            this.profileUrl = null;
             this.email = email;
-            this.password = "";
+            this.password = "temppassword";
             this.cpf = cpf;
-            this.about = "";
+            this.about = null;
             this.birthday = birthday;
             this.landline = landline;
             this.phone = phone;

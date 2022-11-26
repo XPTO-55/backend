@@ -1,0 +1,4 @@
+00PACIENTE    25-11-2022 20:18:3701
+02null  Luciano Huck                            luciano@gmail.com                                    1975-06-29                             
+03null  Rua dos Bobos                                               Caldeirao                     000000-000    Casa 1               São Paulo           SP
+010000000002

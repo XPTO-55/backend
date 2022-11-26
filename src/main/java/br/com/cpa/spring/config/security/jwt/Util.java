@@ -16,10 +16,10 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class Util {
 
     @Value("${jwt.secret}")
-    private String JWT_SECRET_KEY = "qualquer";
+    private String JWT_SECRET_KEY;
 
     @Value("${jwt.expiration}")
-    private Integer JWT_EXPIRATION = 900000000;
+    private Integer JWT_EXPIRATION;
 
     public String getUsername(String token) {
         return getClaim(token, Claims::getSubject);

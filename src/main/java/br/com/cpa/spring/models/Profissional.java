@@ -2,6 +2,7 @@ package br.com.cpa.spring.models;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.Where;
 
 import lombok.*;
