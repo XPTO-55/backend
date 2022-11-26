@@ -13,8 +13,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.cpa.spring.models.Patient;
+import br.com.cpa.spring.models.Role;
 import br.com.cpa.spring.modules.user.patient.PatientRepository;
 import br.com.cpa.spring.repositories.AddressRepository;
+import br.com.cpa.spring.repositories.RoleRepository;
 import br.com.cpa.spring.models.Address;
 
 @Service
@@ -23,6 +25,8 @@ public class ImportArquivoTxt {
   AddressRepository addressRepository;
   @Autowired
   PatientRepository patientRepository;
+  @Autowired
+  RoleRepository roleRepository;
 
   private BCryptPasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
@@ -126,6 +130,9 @@ public class ImportArquivoTxt {
         addressRepository.save(address);
         patient.setAddress(address);
       }
+
+      Role roleUser = roleRepository.findByName("USER");
+      patient.addRole(roleUser);
 
       patientRepository.save(patient);
     }

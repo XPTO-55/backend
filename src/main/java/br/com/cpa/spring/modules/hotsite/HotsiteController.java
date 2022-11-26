@@ -77,11 +77,11 @@ public class HotsiteController {
     }
 
     @Operation(summary = "Import patients from .txt file")
-    @PostMapping(value = "/import", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @PostMapping(value = "/upload")
     public ResponseEntity<Void> patchProfileImage(
-            @RequestBody byte[] arquivo) {
+            @RequestParam("arquivo") MultipartFile arquivo) throws IOException {
 
-        importArquivoTxtService.execute(new String(arquivo));
+        importArquivoTxtService.execute(new String(arquivo.getBytes()));
 
         return ResponseEntity.status(200).build();
     }
