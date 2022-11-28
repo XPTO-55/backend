@@ -29,16 +29,16 @@ public class RatingController {
   @Autowired
   PatientRepository patientRepository;
 
-  @PostMapping("/professional/{id}/rating")
-  @Operation(summary = "create rating to professional")
-  public ResponseEntity<Void> createProfessionalRating(@PathVariable Long id, CreateRatingDTO ratingData) {
-    if (!profissionalRepository.existsById(id)) {
+  @PostMapping("/professional/{professionalId}/rating")
+  @Operation(summary = "Create rating to professional")
+  public ResponseEntity<Void> createProfessionalRating(@PathVariable Long professionalId, CreateRatingDTO ratingData) {
+    if (!profissionalRepository.existsById(professionalId)) {
       return ResponseEntity.notFound().build();
     }
     Rating rating = new Rating();
     rating.setRating(ratingData.getRating());
     rating.setComment(ratingData.getComment());
-    rating.setProfissional(profissionalRepository.findById(id).get());
+    rating.setProfissional(profissionalRepository.findById(professionalId).get());
     repository.save(rating);
     return ResponseEntity.status(201).build();
   }

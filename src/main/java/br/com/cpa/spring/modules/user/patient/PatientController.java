@@ -67,34 +67,35 @@ public class PatientController {
         return ResponseEntity.status(201).body(patient);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{patientId}")
     @Operation(summary = "Get existing specific patient by ID")
-    public ResponseEntity<Patient> show(@PathVariable Long id) {
-        Patient patient = findOnePatientService.execute(id);
+    public ResponseEntity<Patient> show(@PathVariable Long patientId) {
+        Patient patient = findOnePatientService.execute(patientId);
         return ResponseEntity.status(200).body(patient);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{patientId}")
     @Operation(summary = "Update existing specific patient by ID")
-    public ResponseEntity<Patient> update(@PathVariable Long id, @RequestBody @Valid UpdatePatientDTO user) {
-        Patient patient = updatePatientService.execute(id, user);
+    public ResponseEntity<Patient> update(@PathVariable Long patientId, @RequestBody @Valid UpdatePatientDTO user) {
+        Patient patient = updatePatientService.execute(patientId, user);
         return ResponseEntity.status(201).body(patient);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{patientId}")
     @Operation(summary = "Delete existing specific patient by ID")
-    public ResponseEntity<Void> destroy(@PathVariable Long id) {
-        deletePatientService.execute(id);
+    public ResponseEntity<Void> destroy(@PathVariable Long patientId) {
+        deletePatientService.execute(patientId);
         return ResponseEntity.status(204).build();
     }
 
-    @GetMapping(value = "/{id}/profileImage", produces = MediaType.IMAGE_JPEG_VALUE)
+    @Operation(summary = "Get patient profileImage from expecific by ID")
+    @GetMapping(value = "/{patientId}/profileImage", produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<byte[]> getProfileImage(
-            @PathVariable Long id) {
+            @PathVariable Long patientId) {
 
         byte[] foto;
         try {
-            foto = updatePatientProfileImage.get(id);
+            foto = updatePatientProfileImage.get(patientId);
             return ResponseEntity.status(200).header("content-disposition", "attachment; filename=\"userprofile.jpg\"")
                     .body(foto);
         } catch (IOException e) {
@@ -103,12 +104,13 @@ public class PatientController {
         }
     }
 
-    @PatchMapping(value = "/{id}/profileImage", consumes = "image/*")
+    @Operation(summary = "Put patient profileImage from expecific by ID")
+    @PatchMapping(value = "/{patientId}/profileImage", consumes = "image/*")
     public ResponseEntity<Void> patchProfileImage(
-            @PathVariable Long id,
+            @PathVariable Long patientId,
             @RequestBody byte[] novaFoto) {
 
-        updatePatientProfileImage.save(id, novaFoto);
+        updatePatientProfileImage.save(patientId, novaFoto);
 
         return ResponseEntity.status(200).build();
     }

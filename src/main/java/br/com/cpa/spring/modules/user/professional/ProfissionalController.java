@@ -51,7 +51,6 @@ public class ProfissionalController {
         int status = professionals.isEmpty() ? 204 : 200;
         return ResponseEntity.status(status).body(professionals);
     }
-//    @PreAuthorize("hasRole('ADMIN')")
 
     @PostMapping
     @Operation(summary = "Create new professional")
@@ -60,34 +59,36 @@ public class ProfissionalController {
         return ResponseEntity.status(201).body(professional);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{professionalId}")
     @Operation(summary = "Get existing specific professional by ID")
-    public ResponseEntity<Profissional> show(@PathVariable Long id) {
-        Profissional professional = findOneProfissionalService.execute(id);
+    public ResponseEntity<Profissional> show(@PathVariable Long professionalId) {
+        Profissional professional = findOneProfissionalService.execute(professionalId);
         return ResponseEntity.status(200).body(professional);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{professionalId}")
     @Operation(summary = "Update existing specific professional by ID")
-    public ResponseEntity<Profissional> update(@PathVariable Long id, @RequestBody @Valid UpdateProfissionalDTO user) {
-        Profissional professional = updateProfissionalService.execute(id, user);
+    public ResponseEntity<Profissional> update(@PathVariable Long professionalId,
+            @RequestBody @Valid UpdateProfissionalDTO user) {
+        Profissional professional = updateProfissionalService.execute(professionalId, user);
         return ResponseEntity.status(201).body(professional);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{professionalId}")
     @Operation(summary = "Delete existing specific professional by ID")
-    public ResponseEntity<Void> destroy(@PathVariable Long id) {
-        deleteProfissionalService.execute(id);
+    public ResponseEntity<Void> destroy(@PathVariable Long professionalId) {
+        deleteProfissionalService.execute(professionalId);
         return ResponseEntity.status(204).build();
     }
 
-    @GetMapping(value = "/{id}/profileImage", produces = MediaType.IMAGE_JPEG_VALUE)
+    @Operation(summary = "Get professional profileImage from expecific by ID")
+    @GetMapping(value = "/{professionalId}/profileImage", produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<byte[]> getProfileImage(
-            @PathVariable Long id) {
+            @PathVariable Long professionalId) {
 
         byte[] foto;
         try {
-            foto = professionalProfileImage.get(id);
+            foto = professionalProfileImage.get(professionalId);
             return ResponseEntity.status(200).header("content-disposition", "attachment; filename=\"userprofile.jpg\"")
                     .body(foto);
         } catch (IOException e) {
@@ -96,12 +97,13 @@ public class ProfissionalController {
         }
     }
 
-    @PatchMapping(value = "/{id}/profileImage", consumes = "image/*")
+    @Operation(summary = "Put professional profileImage from expecific by ID")
+    @PatchMapping(value = "/{professionalId}/profileImage", consumes = "image/*")
     public ResponseEntity<Void> patchProfileImage(
-            @PathVariable Long id,
+            @PathVariable Long professionalId,
             @RequestBody byte[] novaFoto) {
 
-        professionalProfileImage.save(id, novaFoto);
+        professionalProfileImage.save(professionalId, novaFoto);
 
         return ResponseEntity.status(200).build();
     }

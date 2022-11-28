@@ -51,27 +51,27 @@ public class PlaceController {
     }
 
     @Operation(summary = "Delete expecific place")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        deletePlaceService.execute(id);
+    @DeleteMapping("/{placeId}")
+    public ResponseEntity<Void> delete(@PathVariable Long placeId) {
+        deletePlaceService.execute(placeId);
         return ResponseEntity.status(204).build();
 
     }
 
     @Operation(summary = "List expecific place by id")
-    @GetMapping("/{id}")
-    public ResponseEntity<?> show(@PathVariable Long id) {
-        Optional<Place> place = fIndOnePlaceService.execute(id);
+    @GetMapping("/{placeId}")
+    public ResponseEntity<?> show(@PathVariable Long placeId) {
+        Optional<Place> place = fIndOnePlaceService.execute(placeId);
         return place.isEmpty()
                 ? ResponseEntity.status(404).build()
                 : ResponseEntity.status(200).body(place);
     }
 
     @Operation(summary = "Update expecific place by id")
-    @PutMapping("/{id}")
-    public ResponseEntity<Place> update(@PathVariable Long id,
+    @PutMapping("/{placeId}")
+    public ResponseEntity<Place> update(@PathVariable Long placeId,
                                         @RequestBody @Valid CreatePlaceDTO newPlace) {
-        Place place = updatePlaceService.execute(id, newPlace);
+        Place place = updatePlaceService.execute(placeId, newPlace);
         return ResponseEntity.status(200).body(place);
     }
 }

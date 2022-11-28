@@ -14,8 +14,7 @@ spring:
       ddl-auto: update
   data:
     mongodb:
-      uri: mongodb://localhost:27017
-      database: cpa
+      uri: mongodb://admin:admin@localhost:27017/cpa?authSource=admin
 jwt:
   expiration: 900000000
   secret: javeiroscpa

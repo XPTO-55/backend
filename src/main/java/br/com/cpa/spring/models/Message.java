@@ -4,7 +4,9 @@ import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import javax.persistence.Column;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,13 +19,24 @@ import lombok.ToString;
 @ToString
 @Getter
 @Setter
-@Document(collection = "forums")
-public class Forum extends BaseDocument {
+@Document(collection = "forum_messages")
+public class Message extends BaseDocument {
   @Id
   private String id;
 
-  private String name;
+  private String message;
 
-  @Field(name = "image_url")
-  private String imageUrl;
+  @Field(name = "sender_name")
+  private String senderName;
+
+  @Field(name = "user_id")
+  private Long userId;
+
+  private Forum forum;
+
+  private List<Message> replyes = new ArrayList<>();
+
+  public void addReply(Message reply) {
+    this.replyes.add(reply);
+  }
 }
