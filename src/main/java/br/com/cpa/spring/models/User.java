@@ -4,20 +4,16 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
-
-import lombok.*;
 
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+import lombok.*;
 // Esse @Data já cria os getters, setters, contrutor e o toString() da classe
 @Data
 @AllArgsConstructor
@@ -26,7 +22,7 @@ import java.util.Set;
 // Esse MappedSuperclass diz que é uma super classe
 @MappedSuperclass
 @SQLDelete(sql = "UPDATE users SET deleted_at=now() WHERE user_id=?")
-@Where(clause = "deleted_at NOT IS NULL")
+@Where(clause = "deleted_at IS NULL")
 public abstract class User extends BaseEntity {
     @Id
     @GeneratedValue

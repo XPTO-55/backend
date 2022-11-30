@@ -92,7 +92,6 @@ public class ProfissionalController {
             return ResponseEntity.status(200).header("content-disposition", "attachment; filename=\"userprofile.jpg\"")
                     .body(foto);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Não foi possível carregar a imagem");
         }
     }

@@ -10,7 +10,7 @@ import org.hibernate.annotations.Where;
 @Data
 @Entity(name = "places")
 @Table(name = "places")
-@Where(clause = "deleted_at NOT IS NULL")
+@Where(clause = "deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE places SET deleted_at=now() WHERE place_id=?")
 public class Place extends BaseEntity {
 

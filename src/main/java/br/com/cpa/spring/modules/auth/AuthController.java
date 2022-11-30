@@ -1,10 +1,12 @@
 package br.com.cpa.spring.modules.auth;
 
 import br.com.cpa.spring.models.RefreshToken;
+import br.com.cpa.spring.modules.auth.dtos.ForgotPasswordDTO;
 import br.com.cpa.spring.modules.auth.dtos.LoginRequestDTO;
 import br.com.cpa.spring.modules.auth.dtos.LoginResponseDTO;
 import br.com.cpa.spring.modules.auth.dtos.RefreshTokenRequestDTO;
 import br.com.cpa.spring.modules.auth.dtos.RefreshTokenResponseDTO;
+import br.com.cpa.spring.modules.auth.services.ForgotPasswordService;
 import br.com.cpa.spring.modules.auth.services.LoginService;
 import br.com.cpa.spring.modules.auth.services.RefreshTokenService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,7 +28,18 @@ public class AuthController {
     RefreshTokenService refreshTokenService;
 
     @Autowired
+    ForgotPasswordService forgotPasswordService;
+
+    @Autowired
     RefreshTokenRepository refreshTokenRepository;
+
+    @PostMapping("/forgot-password")
+    @Operation(summary = "Forgot password")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Void> login(@RequestBody ForgotPasswordDTO forgotPasswordData) {
+        forgotPasswordService.execute(forgotPasswordData);
+        return ResponseEntity.ok().build();
+    }
 
     @PostMapping("/login")
     @Operation(summary = "Login")
