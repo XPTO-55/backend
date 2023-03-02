@@ -20,5 +20,7 @@ public class CreateUserAddressDTO {
 
     private String uf; // Estado
 
-    private Point coordenates; // Coor
+    private Double latitute; // Coordenadas
+
+    private Double longitude; // Coordenadas
 }

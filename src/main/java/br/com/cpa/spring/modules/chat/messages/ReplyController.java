@@ -1,7 +1,6 @@
 package br.com.cpa.spring.modules.chat.messages;
 
-import java.util.List;
-
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,6 +46,7 @@ public class ReplyController {
     }
     Message message = repository.findById(messageId).get();
     Message reply = new Message();
+    reply.setId(new ObjectId().toString());
     reply.setUserId(replyMessageData.getUserId());
     reply.setSenderName(replyMessageData.getSenderName());
     reply.setMessage(replyMessageData.getMessage());

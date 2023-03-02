@@ -32,7 +32,9 @@ public class CreateProfissionalRoleService {
                 .collect(Collectors.toList());
 
         Profissional profissional = userExists.get();
-//        profissional.setRoles(roles);
+        for (Role role : roles) {
+            profissional.addRole(role);
+        }
         profissionalRepository.save(profissional);
 
         return profissional;

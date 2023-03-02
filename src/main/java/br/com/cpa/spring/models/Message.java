@@ -1,6 +1,5 @@
 package br.com.cpa.spring.models;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -33,6 +32,8 @@ public class Message extends BaseDocument {
   private Long userId;
 
   private Forum forum;
+
+  private Status status = Status.MESSAGE;
 
   private List<Message> replyes = new ArrayList<>();
 

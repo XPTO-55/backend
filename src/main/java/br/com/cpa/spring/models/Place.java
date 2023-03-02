@@ -23,6 +23,8 @@ public class Place extends BaseEntity {
 
     private String observacoes;
 
+    private String imageUrl;
+
     @OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.PERSIST,
             CascadeType.REFRESH })
     @JoinColumn(name = "address_id", referencedColumnName = "address_id")

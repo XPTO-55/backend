@@ -8,10 +8,13 @@ import lombok.Data;
 public class ListAppointmentResponseDTO {
   private String patient;
   private String professional;
+  private Long professionalId;
   private String especiality;
   private Date date;
 
-  public ListAppointmentResponseDTO(Date date, String patient, String professional, String especiality) {
+  public ListAppointmentResponseDTO(Date date, String patient, String professional, String especiality,
+      Long professionalId) {
+    this.professionalId = professionalId;
     this.patient = patient;
     this.professional = professional;
     this.especiality = especiality;

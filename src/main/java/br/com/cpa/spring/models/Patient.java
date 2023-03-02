@@ -12,35 +12,38 @@ import java.time.LocalDate;
 @Data
 // Esse @NoArgsConstructor cria um construtor vazio
 @NoArgsConstructor
-@AllArgsConstructor
+// @AllArgsConstructor
 @Entity(name = "patients")
 @Table(name = "users")
 @Where(clause = "deleted_at IS NULL")
+// @DiscriminatorValue(value = "patients")
 @ToString
 public class Patient extends User {
-    public Patient(String nome, String email, String cpf, LocalDate dataDeNascimento, String telefoneFixo, String telefoneCelular) {
+        public Patient(String nome, String email, String cpf, LocalDate dataDeNascimento, String telefoneFixo,
+                        String telefoneCelular) {
         super(
-                nome,
-                email,
-                cpf,
-                dataDeNascimento,
-                telefoneFixo,
-                telefoneCelular
+                        nome,
+                        email,
+                        cpf,
+                        dataDeNascimento,
+                        telefoneFixo,
+                        telefoneCelular
         );
-    }
+}
 
-    public Patient(String nome, String email, String cpf, LocalDate dataDeNascimento, String telefoneFixo, String telefoneCelular, Address endereco) {
-   super(
-           nome,
-           email,
-           cpf,
-           dataDeNascimento,
-           telefoneFixo,
-           telefoneCelular,
-           endereco
-   );
+public Patient(String nome, String email, String cpf, LocalDate dataDeNascimento, String telefoneFixo,
+                String telefoneCelular, Address endereco) {
+        super(
+                        nome,
+                        email,
+                        cpf,
+                        dataDeNascimento,
+                        telefoneFixo,
+                        telefoneCelular,
+                        endereco);
         }
 
-  @Transient
-  private String userType = "patients";
+        // @Column(insertable = false, updatable = false)
+        @Transient
+        private String userType = "patients";
 }

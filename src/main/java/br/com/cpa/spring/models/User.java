@@ -6,10 +6,14 @@ import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,6 +27,9 @@ import lombok.*;
 @MappedSuperclass
 @SQLDelete(sql = "UPDATE users SET deleted_at=now() WHERE user_id=?")
 @Where(clause = "deleted_at IS NULL")
+// @DiscriminatorColumn(name = "userType", discriminatorType =
+// DiscriminatorType.STRING)
+// @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class User extends BaseEntity {
     @Id
     @GeneratedValue
@@ -72,8 +79,8 @@ public abstract class User extends BaseEntity {
     @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
     private Set<Role> roles = new HashSet<>();
 
-    @OneToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST,
-                    CascadeType.REFRESH }, fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "profissional")
+    @OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.PERSIST,
+                    CascadeType.REFRESH }, mappedBy = "profissional")
     @JsonManagedReference
     private Set<Rating> ratings = new HashSet<>();
 
@@ -82,6 +89,14 @@ public abstract class User extends BaseEntity {
     @JoinColumn(name = "address_id", referencedColumnName = "address_id")
     private Address address;
 
+    @JsonIgnore()
+    @Column(nullable = true, unique = true)
+    private String token = null;
+
+    @JsonIgnore()
+    @Column(nullable = true)
+    private Date expiryTokenDate = null;
+
     // @OneToOne(mappedBy = "refreshToken")
     // private RefreshToken refreshToken;
 
@@ -89,12 +104,19 @@ public abstract class User extends BaseEntity {
         this.roles.add(role);
     }
 
-    // @PreRemove
-    // public void delete() {
-    // this.setDeletedAt(new Date());
-    // }
+    public void setExpiryTokenDate(Date expiryDate) {
+            this.expiryTokenDate = expiryDate;
+    }
 
-    public abstract String getUserType();
+    public void setExpiryTokenDate(int minutes) {
+            Calendar now = Calendar.getInstance();
+            now.add(Calendar.MINUTE, minutes);
+            this.expiryTokenDate = now.getTime();
+    }
+
+    public boolean isExpired() {
+            return this.expiryTokenDate == null ? true : new Date().after(this.expiryTokenDate);
+    }
 
     public User(String name, String email, String cpf, LocalDate birthday, String landline, String phone,
                     Address address) {
@@ -129,4 +151,5 @@ public abstract class User extends BaseEntity {
             this.address = null;
     }
 
+    public abstract String getUserType();
 }

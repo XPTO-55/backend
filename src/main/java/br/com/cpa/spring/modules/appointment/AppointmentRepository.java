@@ -13,10 +13,10 @@ import br.com.cpa.spring.modules.appointment.dtos.ListAppointmentResponseDTO;
 
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
-  @Query("SELECT new br.com.cpa.spring.modules.appointment.dtos.ListAppointmentResponseDTO(a.createdAt, a.patient.name, a.professional.name, a.professional.especialidade) FROM Appointment a WHERE a.patient.id =:userId")
+  @Query("SELECT new br.com.cpa.spring.modules.appointment.dtos.ListAppointmentResponseDTO(a.createdAt, a.patient.name, a.professional.name, a.professional.especialidade, a.professional.id) FROM Appointment a WHERE a.patient.id =:userId")
   List<ListAppointmentResponseDTO> findAllByPatientId(@Param("userId") Long userId);
 
-  @Query("SELECT new br.com.cpa.spring.modules.appointment.dtos.ListAppointmentResponseDTO(a.createdAt, a.patient.name, a.professional.name, a.professional.especialidade) FROM Appointment a WHERE a.professional.id =:userId")
+  @Query("SELECT new br.com.cpa.spring.modules.appointment.dtos.ListAppointmentResponseDTO(a.createdAt, a.patient.name, a.professional.name, a.professional.especialidade, a.professional.id) FROM Appointment a WHERE a.professional.id =:userId")
   List<ListAppointmentResponseDTO> findAllByProfessionalId(@Param("userId") Long userId);
 
   @Modifying

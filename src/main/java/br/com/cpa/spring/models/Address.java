@@ -39,8 +39,11 @@ public class Address {
     @Column
     private String uf; // Estado
 
-    @Column(columnDefinition = "POINT")
-    private Point coordenates; // Coordenadas
+    @Column
+    private Double latitute; // Coordenadas
+
+    @Column
+    private Double longitude; // Coordenadas
 
     public Address(Long id, String street, String district, String number, String complement, String zipcode, String city, String uf) {
         this.id = id;
@@ -51,6 +54,7 @@ public class Address {
         this.zipcode = zipcode;
         this.city = city;
         this.uf = uf;
-        this.coordenates = null;
+        this.latitute = 0.0;
+        this.longitude = 0.0;
     }
 }

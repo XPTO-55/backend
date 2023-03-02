@@ -2,10 +2,11 @@ package br.com.cpa.spring.modules.user.rating;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.cpa.spring.models.Rating;
@@ -31,7 +32,10 @@ public class RatingController {
 
   @PostMapping("/professional/{professionalId}/rating")
   @Operation(summary = "Create rating to professional")
-  public ResponseEntity<Void> createProfessionalRating(@PathVariable Long professionalId, CreateRatingDTO ratingData) {
+  @ResponseBody
+  public ResponseEntity<Void> createProfessionalRating(
+      @PathVariable Long professionalId,
+      @RequestBody CreateRatingDTO ratingData) {
     if (!profissionalRepository.existsById(professionalId)) {
       return ResponseEntity.notFound().build();
     }

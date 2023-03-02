@@ -1,6 +1,5 @@
 package br.com.cpa.spring.modules.user.professional.services;
 
-import br.com.cpa.spring.models.Patient;
 import br.com.cpa.spring.models.Profissional;
 import br.com.cpa.spring.modules.user.professional.ProfissionalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ public class FindProfissionalService {
     public List<Profissional> execute() {
 
         // utilizando as funçoes do repository para buscar todos os usuários
-        List<Profissional> professional = profissionalRepository.findAllAndRatings();
+        List<Profissional> professional = profissionalRepository.findAll();
 
         return professional;
     }

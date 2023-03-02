@@ -1,9 +1,10 @@
 package br.com.cpa.spring.modules.chat.messages.dto;
 
-import br.com.cpa.spring.models.Forum;
+import groovy.transform.ToString;
 import lombok.Data;
 
 @Data
+@ToString
 public class CreateMessageDTO {
   private String message;
 

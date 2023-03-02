@@ -1,8 +1,7 @@
 package br.com.cpa.spring.models;
 
 import java.time.Instant;
-
-import javax.persistence.Column;
+import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -25,10 +24,15 @@ public class BaseDocument {
   @JsonProperty(access = JsonProperty.Access.READ_ONLY)
   @CreatedDate
   @Field(name = "created_at")
-  private Instant createdAt = Instant.now();
+  private LocalDateTime createdAt = LocalDateTime.now();
 
   @JsonProperty(access = JsonProperty.Access.READ_ONLY)
   @LastModifiedDate
   @Field(name = "updated_at")
-  private Instant updatedAt = Instant.now();
+  private LocalDateTime updatedAt = LocalDateTime.now();
+
+  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+  @LastModifiedDate
+  @Field(name = "deleted_at")
+  private LocalDateTime deletedAt = null;
 }

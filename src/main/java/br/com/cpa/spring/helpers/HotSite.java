@@ -39,7 +39,7 @@ public class HotSite {
         Boolean deuRuim = false;
         // nomeArq += ".csv"; // Acrescenta a extensão.csv ao nome do arquivo
 
-        ordenarPorIdade(lista);
+        // ordenarPorIdade(lista);
 
         // Bloco para abrir o arquivo
         try {

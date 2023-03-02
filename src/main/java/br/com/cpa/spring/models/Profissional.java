@@ -14,7 +14,9 @@ import lombok.*;
 // Esse @NoArgsConstructor cria um construtor vazio
 @NoArgsConstructor
 @Entity(name = "professionals")
+// @DiscriminatorValue(value = "professionals")
 public class Profissional extends User {
+    // @Column(insertable = false, updatable = false)
     @Transient
     private String userType = "professionals";
 

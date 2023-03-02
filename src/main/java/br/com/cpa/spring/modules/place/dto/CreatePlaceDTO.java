@@ -13,6 +13,8 @@ public class CreatePlaceDTO {
 
     private String observacoes;
 
+    private String imageUrl;
+
     private Address address;
 
 }

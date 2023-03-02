@@ -3,10 +3,14 @@ package br.com.cpa.spring.modules.chat.forums;
 import java.io.IOException;
 import java.util.List;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -59,6 +63,18 @@ public class ForumController {
     Forum forum = new Forum();
     forum.setName(forumData.getName());
     return ResponseEntity.ok(this.repository.save(forum));
+  }
+
+  @Operation(summary = "Delete forum by expecific id")
+  @DeleteMapping("/{forumId}")
+  public ResponseEntity<Void> delete(@PathVariable String forumId) {
+    if (!repository.existsById(forumId)) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Forum not found");
+    }
+    Forum forum = repository.findById(forumId).get();
+    forum.setDeletedAt(LocalDateTime.now());
+    repository.save(forum);
+    return ResponseEntity.noContent().build();
   }
 
   @Operation(summary = "Get forum imageProfile from expecific by ID")

@@ -22,23 +22,23 @@ services:
     # Definição de qual rede aquele serviço estará utilizando
     networks:
       - mysql-compose-network
-  postgres:
-    # nome da imagem do container
-    image: postgres
-    restart: always
-    # Indicação de onde está o arquivo de configuração
-    #    env_file:
-    #      - .env.dev
-    environment:
-      POSTGRES_USER: "root"
-      POSTGRES_PASSWORD: "root"
-      POSTGRES_DB: "cpa"
-    # Abertura de porta do container para se rusado externamente
-    ports:
-      - "5432:5432"
-    # Uso do volume para persistência dos dados armazenados (Como se fosse um HD para salvar os dados)
-    volumes:
-      - pgdata:/var/lib/postgrespers
+  # postgres:
+  #   # nome da imagem do container
+  #   image: postgres
+  #   restart: always
+  #   # Indicação de onde está o arquivo de configuração
+  #   #    env_file:
+  #   #      - .env.dev
+  #   environment:
+  #     POSTGRES_USER: "root"
+  #     POSTGRES_PASSWORD: "root"
+  #     POSTGRES_DB: "cpa"
+  #   # Abertura de porta do container para se rusado externamente
+  #   ports:
+  #     - "5432:5432"
+  #   # Uso do volume para persistência dos dados armazenados (Como se fosse um HD para salvar os dados)
+  #   volumes:
+  #     - pgdata:/var/lib/postgrespers
     # Definição de qual rede aquele serviço estará utilizando
 #    networks:
 #      - postgres-compose-network
@@ -52,11 +52,33 @@ services:
       MONGO_INITDB_DATABASE: cpa
     volumes:
       - mongodb:/data/db
+  broker:
+    # image: rabbitmq:3-management-alpine
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: 'rabbit'
+    restart: always
+    # command: rabbitmq-plugins enable --offline rabbitmq_stomp
+    environment:
+      RABBITMQ_DEFAULT_USER: guess
+      RABBITMQ_DEFAULT_PASS: guess
+    ports:
+      - 5672:5672 # message communication port
+      # - 15671:15671
+      # - 5673:5673
+      # - 25672:25672 # (erlang) communication between the nodes and CLI tool
+      - 15672:15672 # communication with the web management API
+      - 61613:61613
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq/
+      - rabbitmq:/var/log/rabbitmq
 # Criação dos volumes (HDs) dos serviços
 volumes:
-  mysqlvol: { }
-  pgdata: { }
+  mysqlvol: {}
+  # pgdata: { }
   mongodb: {}
+  rabbitmq: {}
 # Criação das redes dos serviços
 networks:
   mysql-compose-network:

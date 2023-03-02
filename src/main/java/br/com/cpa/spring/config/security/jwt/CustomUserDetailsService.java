@@ -14,14 +14,17 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     PatientRepository patientRepository;
     @Autowired
-    ProfissionalRepository profissioonalRepository;
+    ProfissionalRepository profissionalRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User emailAlreadyExists = patientRepository.findByEmailFetchRoles(email);
 
         if (emailAlreadyExists == null) {
-            throw new UsernameNotFoundException("User not found");
+            emailAlreadyExists = profissionalRepository.findByEmailFetchRoles(email);
+            if (emailAlreadyExists == null) {
+                throw new UsernameNotFoundException("User not found");
+            }
         }
 
         return UserPrincipal.create(emailAlreadyExists);

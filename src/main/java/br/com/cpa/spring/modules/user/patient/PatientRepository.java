@@ -1,6 +1,5 @@
 package br.com.cpa.spring.modules.user.patient;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 
@@ -28,5 +27,9 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     @Modifying
     @Query(value = "UPDATE patients p SET deleted_at=now() WHERE p.id=:id")
     void deleteById(@Param("id") Long id);
+
+    @Modifying
+    @Query("UPDATE patients p set p.password =:password where p.id =:id")
+    void updatePassword(@Param("password") String password, @Param("id") Long id);
 
 }
