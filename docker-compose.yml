@@ -1,47 +1,30 @@
 version: "3.7"
 services:
-  # nome serviço do docker que terá um container
+  grafana:
+      image: 'grafana/grafana:6.5.0'
+      ports:
+        - 9001:3000
+      volumes:
+        - grafana-data:/var/lib/grafana
+  prometheus:
+      image: prom/prometheus:v2.14.0
+      ports:
+        - '9090:9090'
+      command: '--config.file=/etc/prometheus/config.yml'
+      volumes:
+        - './config/prometheus/prometheus.yml:/etc/prometheus/config.yml'
   database:
-    # nome da imagem do container
     image: mysql
-    # build:
-    #   context: .
-    #   dockerfile: Dockerfile
     command: --default-authentication-plugin=mysql_native_password
-    # Opção que caso de erro no container ele restarte automaticamente
     restart: always
-    # Indicação de onde está o arquivo de configuração
     env_file:
       - .env.dev
-    # Abertura de porta do container para se rusado externamente
     ports:
       - "3306:3306"
-    # Uso do volume para persistência dos dados armazenados (Como se fosse um HD para salvar os dados)
     volumes:
       - mysqlvol:/var/lib/mysql
-    # Definição de qual rede aquele serviço estará utilizando
     networks:
       - mysql-compose-network
-  # postgres:
-  #   # nome da imagem do container
-  #   image: postgres
-  #   restart: always
-  #   # Indicação de onde está o arquivo de configuração
-  #   #    env_file:
-  #   #      - .env.dev
-  #   environment:
-  #     POSTGRES_USER: "root"
-  #     POSTGRES_PASSWORD: "root"
-  #     POSTGRES_DB: "cpa"
-  #   # Abertura de porta do container para se rusado externamente
-  #   ports:
-  #     - "5432:5432"
-  #   # Uso do volume para persistência dos dados armazenados (Como se fosse um HD para salvar os dados)
-  #   volumes:
-  #     - pgdata:/var/lib/postgrespers
-    # Definição de qual rede aquele serviço estará utilizando
-#    networks:
-#      - postgres-compose-network
   mongo:
     image: mongo
     ports:
@@ -53,13 +36,11 @@ services:
     volumes:
       - mongodb:/data/db
   broker:
-    # image: rabbitmq:3-management-alpine
     build:
       context: .
       dockerfile: Dockerfile
     container_name: 'rabbit'
     restart: always
-    # command: rabbitmq-plugins enable --offline rabbitmq_stomp
     environment:
       RABBITMQ_DEFAULT_USER: guess
       RABBITMQ_DEFAULT_PASS: guess
@@ -73,15 +54,11 @@ services:
     volumes:
       - rabbitmq:/var/lib/rabbitmq/
       - rabbitmq:/var/log/rabbitmq
-# Criação dos volumes (HDs) dos serviços
 volumes:
   mysqlvol: {}
-  # pgdata: { }
   mongodb: {}
   rabbitmq: {}
-# Criação das redes dos serviços
+  grafana-data: {}
 networks:
   mysql-compose-network:
-    driver: bridge
-  postgres-compose-network:
     driver: bridge

@@ -1,5 +1,6 @@
-package br.com.cpa.spring.modules.chat.messages;
+package br.com.cpa.spring.modules.chat.messages.forum;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -7,24 +8,19 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import br.com.cpa.spring.models.Forum;
-import br.com.cpa.spring.models.Message;
+import br.com.cpa.spring.models.MessageForum;
 import br.com.cpa.spring.modules.chat.forums.ForumRepository;
 import br.com.cpa.spring.modules.chat.messages.dto.CreateMessageDTO;
 import br.com.cpa.spring.modules.chat.messages.dto.UpdateMessageDTO;
@@ -33,13 +29,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Controller
-@RequestMapping("/forums/{forumId}/messages")
-@Tag(name = "Message", description = "Chat Message Routes")
+@RestController("/messages")
+@Tag(name = "Forum Message", description = "Chat Forum Messages Routes")
 @SecurityRequirement(name = "jwtauth")
-public class MessageController {
+public class ForumMessageController {
   @Autowired
-  MessageRepository repository;
+  ForumMessageRepository forumMessagerepository;
 
   @Autowired
   ForumRepository forumRepository;
@@ -48,37 +43,38 @@ public class MessageController {
   private WebSocketProvider webSocketProvider;
 
   @Operation(summary = "Get all messages from forumId")
-  @GetMapping
-  @ResponseBody
-  public List<Message> index(
+  @GetMapping("/forums/{forumId}/messages")
+  public List<MessageForum> index(
       @PathVariable String forumId,
       @RequestParam(defaultValue = "0", required = false) int page,
-      @RequestParam(defaultValue = "20", required = false) int size) {
+      @RequestParam(defaultValue = "20", required = false) int size,
+      @RequestParam(defaultValue = "DESC", required = false) Sort.Direction sort
+      ) {
     if (!forumRepository.existsById(forumId)) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Forum not found");
     }
-    Pageable pageable = PageRequest.of(page, size);
-    return this.repository.findByForumId(forumId, pageable);
+    Pageable pageable = PageRequest.of(page, size, Sort.by(sort,"created_at"));
+    List<MessageForum> messages = this.forumMessagerepository.findByForumId(forumId, pageable);
+    Collections.reverse(messages);
+    return messages;
   }
 
-  @Operation(summary = "List message by expecific id")
-  @GetMapping("/{messageId}")
-  @ResponseBody
-  public Message show(
+  @Operation(summary = "List forum message by expecific id")
+  @GetMapping("/forums/{forumId}/messages/{messageId}")
+  public MessageForum show(
       @PathVariable String forumId,
       @PathVariable String messageId) {
     if (!forumRepository.existsById(forumId)) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Forum not found");
     }
-    if (!repository.existsById(messageId)) {
+    if (!forumMessagerepository.existsById(messageId)) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Message not found");
     }
-    return this.repository.findById(messageId).get();
+    return this.forumMessagerepository.findById(messageId).get();
   }
 
-  @Operation(summary = "create message")
-  @PostMapping
-  @ResponseBody
+  @Operation(summary = "create forum message")
+  @PostMapping("/forums/{forumId}/messages")
   public void store(
       @PathVariable String forumId,
       @RequestBody @Valid CreateMessageDTO createMessageData) {
@@ -87,48 +83,30 @@ public class MessageController {
     }
     Forum forum = new Forum();
     forum.setId(forumId);
-    Message message = new Message();
-    message.setUserId(createMessageData.getUserId());
+    MessageForum message = new MessageForum();
+    message.setSenderId(createMessageData.getSenderId());
     message.setSenderName(createMessageData.getSenderName());
     message.setMessage(createMessageData.getMessage());
     message.setForum(forum);
-    Message messageResponse = this.repository.save(message);
-    webSocketProvider.notifyForum(messageResponse, forumId);
-    webSocketProvider.notifyUser(messageResponse, 3L);
+    MessageForum messageResponse = this.forumMessagerepository.save(message);
+    webSocketProvider.notifyForum(messageResponse);
   }
 
-  @Operation(summary = "update message by expecific id")
-  @PatchMapping("/{id}")
-  @ResponseBody
-  public Message update(
+  @Operation(summary = "update forum message by expecific id")
+  @PatchMapping("/forums/{forumId}/messages/{id}")
+  public MessageForum update(
       @PathVariable String forumId,
       @PathVariable String id,
       @RequestBody UpdateMessageDTO updateMessageData) {
     if (!forumRepository.existsById(forumId)) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Forum not found");
     }
-    if (!repository.existsById(id)) {
+    if (!forumMessagerepository.existsById(id)) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Message not found");
     }
-    Message message = repository.findById(id).get();
+    MessageForum message = forumMessagerepository.findById(id).get();
     message.setMessage(updateMessageData.getMessage());
-    return this.repository.save(message);
+    return this.forumMessagerepository.save(message);
   }
 
-  @MessageMapping("/message/{forumId}")
-  @SendTo("/chatroom/public")
-  public Message sendMessage(@DestinationVariable("forumId") String forumId, @Payload CreateMessageDTO messageData) {
-    if (!forumRepository.existsById(forumId)) {
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Forum not found");
-    }
-    Forum forum = new Forum();
-    forum.setId(forumId);
-    Message message = new Message();
-    message.setUserId(messageData.getUserId());
-    message.setSenderName(messageData.getSenderName());
-    message.setMessage(messageData.getMessage());
-    message.setForum(forum);
-    System.out.println("message: " + message.getMessage());
-    return this.repository.save(message);
-  }
 }

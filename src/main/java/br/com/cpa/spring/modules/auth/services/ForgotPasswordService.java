@@ -48,17 +48,16 @@ public class ForgotPasswordService {
       profissionalRepository.save((Profissional) (user));
     }
     Mail mail = new Mail();
-    mail.setFrom("no-reply@memorynotfound.com");
-    mail.setTo("reset-passwords@inbound.devmail.email");
+    mail.setTo(user.getEmail().toString());
     mail.setSubject("Password reset request");
 
     Map<String, Object> model = new HashMap<>();
     // model.put("token", user.getToken());
     model.put("user", user);
     // model.put("signature", "https://memorynotfound.com");
-    // model.put("resetUrl", "/reset-password?token=" + user.getToken());
+    model.put("resetUrl", "http://localhost:3000/redefine-password?token=" + user.getToken());
     mail.setModel(model);
-    // emailProvider.sendEmail(mail);
+    emailProvider.sendEmail(mail);
     return;
   }
 }

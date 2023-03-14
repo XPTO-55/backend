@@ -10,5 +10,5 @@ public class CreateMessageDTO {
 
   private String senderName;
 
-  private Long userId;
+  private Long senderId;
 }

@@ -181,14 +181,30 @@ public class HotSite {
 
             corpo = "03";
             corpo += String.format("%-6.6s", paciente.getId());
-            corpo += String.format("%-60.60s", paciente.getAddress().getStreet().toString());
-            corpo += String.format("%-30.30s", paciente.getAddress().getDistrict().toString());
-            corpo += String.format("%-9.9s", paciente.getAddress().getZipcode().toString());
-            corpo += String.format("%-5.5s", paciente.getAddress().getNumber().toString());
-            corpo += String.format("%-21.21s", paciente.getAddress().getComplement().toString());
-            corpo += String.format("%-20.20s", paciente.getAddress().getCity().toString());
-            corpo += String.format("%-2.2s", paciente.getAddress().getUf().toString());
-
+            if(paciente.getAddress() != null){
+                Address address = paciente.getAddress();
+                if(address.getStreet()  != null){
+                    corpo += String.format("%-60.60s", address.getStreet().toString());
+                }
+                if(address.getDistrict() != null){
+                    corpo += String.format("%-60.60s", address.getDistrict().toString());
+                }
+                if(address.getZipcode() != null){
+                    corpo += String.format("%-60.60s", address.getZipcode().toString());
+                }
+                if(address.getNumber() != null){
+                    corpo += String.format("%-60.60s", address.getNumber().toString());
+                }
+                if(address.getComplement() != null){
+                    corpo += String.format("%-60.60s", address.getComplement().toString());
+                }
+                if(address.getCity() != null){
+                    corpo += String.format("%-60.60s", paciente.getAddress().getStreet().toString());
+                }
+                if(address.getUf() != null){
+                    corpo += String.format("%-60.60s", address.getUf().toString());
+                }
+            }
             gravaRegistro(corpo, nomeArq);
             contaRegDados++;
         }

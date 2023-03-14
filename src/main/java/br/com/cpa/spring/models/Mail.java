@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class Mail {
-  private String from;
+  private String from = "lukasalves271@gmail.com";
   private String to;
   private String subject;
   private Map<String, Object> model = new HashMap<>();

@@ -1,9 +1,9 @@
 package br.com.cpa.spring.models;
 
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -12,28 +12,25 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @Getter
 @Setter
-public class Message extends BaseDocument {
+public class UserMongo extends BaseDocument {
   @Id
   private String id;
 
-  private String message;
+  private String name;
 
-  @Field(name = "sender_name")
-  private String senderName;
+  @Field(name = "image_url")
+  private String imageUrl;
 
-  @Field(name = "sender_id")
-  private Long senderId;
+  private List<UserMongo> contacts = new ArrayList<UserMongo>();
 
-  private Status status = Status.MESSAGE;
-
-  private List<Message> replyes = new ArrayList<>();
-
-  public void addReply(Message reply) {
-    this.replyes.add(reply);
+  public void addReply(UserMongo contact) {
+    this.contacts.add(contact);
   }
 }

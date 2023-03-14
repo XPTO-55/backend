@@ -27,16 +27,16 @@ spring:
 # ===============================
   mail:
     default-encoding: UTF-8
-    host: smtp.mailosaur.net
-    username: a0zfxssv@mailosaur.net
-    password: qresvz7GqfIXZ2EV
-    port: 25
+    host: smtp.gmail.com
+    username: grupo5bandtec@gmail.com
+    password: yalrfndeyshwdodb
+    port: 587
     properties:
       mail:
         smtp:
-          auth: false
+          auth: true
           starttls:
-            enable: false
+            enable: true
             required: false
           connectiontimeout: 10000
           timeout: 10000

@@ -3,7 +3,6 @@ package br.com.cpa.spring.modules.chat.forums;
 import java.io.IOException;
 import java.util.List;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;

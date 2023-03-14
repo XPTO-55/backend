@@ -1,12 +1,10 @@
 package br.com.cpa.spring.modules.auth.dtos;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.io.Serializable;
 
-@Getter
-@Setter
+@Data
 public class LoginRequestDTO implements Serializable {
     private String email;
     private String password;

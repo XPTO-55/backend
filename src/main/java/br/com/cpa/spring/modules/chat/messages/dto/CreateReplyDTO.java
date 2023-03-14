@@ -8,5 +8,5 @@ public class CreateReplyDTO {
 
   private String senderName;
 
-  private Long userId;
+  private Long senderId;
 }

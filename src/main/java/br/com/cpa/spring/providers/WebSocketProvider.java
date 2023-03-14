@@ -1,6 +1,7 @@
 package br.com.cpa.spring.providers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
@@ -15,19 +16,23 @@ public class WebSocketProvider {
     this.messagingTemplate = messagingTemplate;
   }
 
+  public void notifyUser(final Message message) {
+    messagingTemplate.convertAndSend( "/queue/private", message);
+  }
+
   public void notifyUser(final Message message, final Long userId) {
-    messagingTemplate.convertAndSendToUser(userId.toString(), "/queue/messages", message);
+    messagingTemplate.convertAndSend("/queue/private-"+userId.toString(), message);
   }
 
   public void notifyForum(final Message message, final String forumId) {
-    messagingTemplate.convertAndSendToUser(forumId.toString(), "/queue/messages", message);
-    messagingTemplate.convertAndSendToUser("3", "/queue/messages", message);
-    messagingTemplate.convertAndSend("user" + forumId.toString() + "/queue/messages", message);
-    messagingTemplate.convertAndSend("user" + 3 + "/queue/messages", message);
-    messagingTemplate.convertAndSend("/topic/public", message);
+    messagingTemplate.convertAndSendToUser(forumId, "/queue/chat.v1.messages.forum_messages"+forumId, message);
   }
 
-  public void notifyAll(final Message message, final String forumId) {
+  public void notifyForum(final Message message) {
+    messagingTemplate.convertAndSend("/queue/chat.v1.messages.forum_messages", message);
+  }
+
+  public void notifyAll(final Message message) {
     messagingTemplate.convertAndSend("/topic/public", message);
   }
 }

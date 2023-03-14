@@ -43,7 +43,10 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
         if (brokerEnabled) {
             registry
-                .enableStompBrokerRelay("/topic")
+                .enableStompBrokerRelay(
+                    "/topic",
+                    "/queue"
+                )
                 .setSystemLogin(brokerUser)
                 .setSystemPasscode(brokerPass)
                 .setClientLogin(brokerUser)
@@ -55,7 +58,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .setSystemHeartbeatSendInterval(10000);
             registry.setApplicationDestinationPrefixes("/app");
             registry.setUserDestinationPrefix("/user");
-
             // .setUserDestinationBroadcast("/user");
             // .setUserRegistryBroadcast("/chatroom/log-user-registry");
 

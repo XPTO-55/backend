@@ -3,7 +3,6 @@ package br.com.cpa.spring.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.geo.Point;
 
 import javax.persistence.*;
 
