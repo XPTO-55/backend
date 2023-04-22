@@ -21,7 +21,7 @@ public class CreateProfissionalRoleService {
 
     public Profissional execute(CreateProfissionalRoleDTO createUserRoleDTO) {
         Optional<Profissional> userExists = profissionalRepository.findById(createUserRoleDTO.getIdUser());
-        List<Role> roles = new ArrayList();
+        List<Role> roles = new ArrayList<Role>();
 
         if (userExists.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Profissional não encontrado");

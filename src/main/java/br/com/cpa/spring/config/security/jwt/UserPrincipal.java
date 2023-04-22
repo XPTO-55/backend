@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 @Data
 public class UserPrincipal implements UserDetails {
-    private List<SimpleGrantedAuthority> authorities = new ArrayList();
+    private List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
     private User user;
     private String userType;
 

@@ -1,10 +1,10 @@
 package br.com.cpa.spring.config.metrics;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+// import org.springframework.context.annotation.Bean;
+// import org.springframework.context.annotation.Configuration;
 
-import io.micrometer.core.aop.TimedAspect;
-import io.micrometer.core.instrument.MeterRegistry;
+// import io.micrometer.core.aop.TimedAspect;
+// import io.micrometer.core.instrument.MeterRegistry;
 
 // @Configuration
 public class PrometheusConfig {

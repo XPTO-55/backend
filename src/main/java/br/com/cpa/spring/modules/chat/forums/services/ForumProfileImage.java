@@ -13,9 +13,7 @@ import com.amazonaws.util.IOUtils;
 
 import br.com.cpa.spring.helpers.AwsHelper;
 import br.com.cpa.spring.models.Forum;
-import br.com.cpa.spring.models.Patient;
 import br.com.cpa.spring.modules.chat.forums.ForumRepository;
-import br.com.cpa.spring.modules.user.patient.PatientRepository;
 
 @Service
 public class ForumProfileImage {

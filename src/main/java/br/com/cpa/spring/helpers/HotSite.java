@@ -225,8 +225,8 @@ public class HotSite {
         int contaRegDadoLido = 0;
         int qtdRegDadoGravado;
 
-        List<Patient> listaLidaPaciente = new ArrayList();
-        List<Address> listaLidaEndereco = new ArrayList();
+        List<Patient> listaLidaPaciente = new ArrayList<Patient>();
+        List<Address> listaLidaEndereco = new ArrayList<Address>();
 
         // try-catch para abrir o arquivo
         try {

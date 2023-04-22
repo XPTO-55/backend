@@ -36,8 +36,8 @@ public class ImportArquivoTxt {
     String nome, email, cpf, telefoneFixo, telefoneCelular, rua, bairro, numero, complemento, cep, cidade, uf;
     LocalDate dataDeNascimento;
 
-    List<Patient> listaLidaPaciente = new ArrayList<>();
-    List<Address> listaLidaEndereco = new ArrayList();
+    List<Patient> listaLidaPaciente = new ArrayList<Patient>();
+    List<Address> listaLidaEndereco = new ArrayList<Address>();
     int contaRegDadoLido = 0;
     int qtdRegDadoGravado;
 
@@ -134,6 +134,7 @@ public class ImportArquivoTxt {
 
       patientRepository.save(patient);
     }
+    scanner.close();
     return;
   }
 }
