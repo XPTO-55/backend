@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class LoginResponseDTO implements Serializable {
 
     public LoginResponseDTO(String jwtToken, String type, String userType, String refreshToken, String email,
-            String username, String profileUrl, Long id) {
+            String username, String profileUrl, Long id, String phone) {
         this.jwtToken = jwtToken;
         this.type = type;
         this.userType = userType;
@@ -18,6 +18,7 @@ public class LoginResponseDTO implements Serializable {
         this.email = email;
         this.username = username;
         this.profileUrl = profileUrl;
+        this.phone = phone;
         this.id = id;
     }
 
@@ -28,6 +29,7 @@ public class LoginResponseDTO implements Serializable {
     private String username;
     private String email;
     private String profileUrl;
+    private String phone;
     private Long id;
 
 

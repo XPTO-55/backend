@@ -39,6 +39,9 @@ public class Address {
     private String uf; // Estado
 
     @Column
+    private String url; // Url
+
+    @Column
     private Double latitute; // Coordenadas
 
     @Column
